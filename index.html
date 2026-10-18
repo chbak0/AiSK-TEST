@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A!SK 모의면접 연습기 · 녹화 분석</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f4f2; --panel:#ffffff; --ink:#1b2027; --muted:#5d6672; --line:#d9ddd8;
+  --accent:#2f5d8a; --accent-ink:#ffffff; --accent-soft:#e3ebf3;
+  --prep:#b7791f; --prep-soft:#fbf1df; --rec:#c2362f; --rec-soft:#f9e3e1; --ok:#2e7d55; --ok-soft:#e1f1e8;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#13171c; --panel:#1b2027; --ink:#e6e9ee; --muted:#9aa3ae; --line:#2c333c;
+  --accent:#7fa8d1; --accent-ink:#10161d; --accent-soft:#223244;
+  --prep:#e0a84a; --prep-soft:#33291a; --rec:#ef6b62; --rec-soft:#3a201e; --ok:#5fc08c; --ok-soft:#1b3126; color-scheme:dark;}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;padding:20px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-family:var(--f-mono);font-size:22px}
+.brand span{color:var(--muted);font-size:13px}
+nav.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:4px}
+nav.tabs button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:6px 12px;border-radius:7px;cursor:pointer}
+nav.tabs button[aria-current="true"]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-size:24px;line-height:1.35}
+h2{font-size:17px}
+h3{font-size:15px}
+.lead{color:var(--muted);margin:6px 0 0;max-width:66ch}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
+.label{font-size:12px;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.grid{display:grid;gap:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.spread{justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-weight:600;font-size:14px;padding:10px 18px;border-radius:9px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.big{font-size:16px;padding:14px 26px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.note{font-size:13px;color:var(--muted)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px}
+.tip{border-left:3px solid var(--line);padding:2px 0 2px 12px;color:var(--muted);font-size:13px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+/* camera */
+.cam{position:relative;border-radius:10px;overflow:hidden;background:#000;aspect-ratio:4/3;max-width:100%}
+.cam video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block}
+.cam .guide{position:absolute;left:50%;top:46%;width:42%;aspect-ratio:3/4;transform:translate(-50%,-50%);border:2px dashed rgba(255,255,255,.45);border-radius:50%}
+.cam .live{position:absolute;left:8px;bottom:8px;right:8px;display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.pill.good{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.pill.warn{background:var(--prep-soft);color:var(--prep);border-color:transparent}
+.pill.bad{background:var(--rec-soft);color:var(--rec);border-color:transparent}
+.pill.na{color:var(--muted)}
+.meter{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--ok);transition:width .1s}
+.checklist{display:flex;flex-direction:column;gap:8px;font-size:14px}
+.checklist div{display:flex;justify-content:space-between;gap:10px;align-items:center}
+/* run */
+.status{display:flex;gap:6px}
+.step{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.step.done{background:var(--accent)} .step.now{background:var(--ink)}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.qtext{font-size:20px;font-weight:600;line-height:1.5;margin:10px 0 0}
+.runlay{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.runlay{grid-template-columns:1fr}}
+.timer{display:flex;align-items:center;gap:14px;margin-top:14px}
+.timer b{font-family:var(--f-mono);font-size:40px;font-variant-numeric:tabular-nums;line-height:1}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:100%}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:999px}
+.badge.prep{background:var(--prep-soft);color:var(--prep)}
+.badge.rec{background:var(--rec-soft);color:var(--rec)}
+.badge.rec::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rec);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.2}}
+@media (prefers-reduced-motion:reduce){.badge.rec::before{animation:none}}
+.chart{margin-top:14px;border:1px solid var(--line);border-radius:10px;padding:10px;overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto;min-width:300px}
+.chart svg text{fill:var(--muted);font-family:var(--f-mono);font-size:11px}
+.overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;z-index:5}
+.overlay b{font-family:var(--f-mono);font-size:64px}
+/* report */
+.scorebox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.scorebox{grid-template-columns:1fr}}
+.score{border:1px solid var(--line);border-radius:10px;padding:14px}
+.score b{font-family:var(--f-mono);font-size:30px;display:block;line-height:1.2}
+.score small{color:var(--muted);font-size:12px}
+.qrep{display:flex;flex-direction:column;gap:12px;border-top:1px solid var(--line);padding-top:18px}
+.qrep:first-child{border-top:0;padding-top:0}
+.replay{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px}
+@media (max-width:720px){.replay{grid-template-columns:1fr}}
+.replay video{width:100%;border-radius:8px;background:#000;display:block}
+table.m{width:100%;border-collapse:collapse;font-size:13px}
+table.m td{padding:6px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+table.m td:nth-child(2){font-family:var(--f-mono);white-space:nowrap;text-align:right}
+table.m td:last-child{text-align:right;white-space:nowrap}
+table.m tr.cat td{font-weight:700;color:var(--muted);font-size:12px;letter-spacing:.06em;border-bottom:0;padding-top:12px}
+.why{font-size:12px;color:var(--muted)}
+textarea,select{width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:110px;resize:vertical}
+mark{background:var(--prep-soft);color:var(--prep);border-radius:3px;padding:0 2px}
+.focus{display:flex;flex-direction:column;gap:8px}
+.focus div{display:flex;gap:10px;align-items:baseline;font-size:14px}
+.qlist{display:flex;flex-direction:column}
+.qitem{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.qitem:first-child{border-top:0}
+.tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;white-space:nowrap;align-self:start}
+.tag.src{background:var(--ok-soft);color:var(--ok)} .tag.exp{background:var(--accent-soft);color:var(--accent)} .tag.guide{background:var(--prep-soft);color:var(--prep);border:1px solid var(--prep)}
+.tag.mine{background:var(--prep-soft);color:var(--prep)}
+.sub{font-size:12px;color:var(--muted);font-family:var(--f-mono)}
+.linkbtn{border:0;background:none;color:var(--rec);font:inherit;font-size:12px;cursor:pointer}
+.hist div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:5px 0;font-size:13px}
+.hist span:last-child{font-family:var(--f-mono);color:var(--muted)}
+.warnbox{background:var(--prep-soft);color:var(--ink);border-radius:10px;padding:12px 14px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>A!SK SIM</b><span>녹화 · 행동 분석판</span></div>
+    <nav class="tabs" aria-label="화면 이동">
+      <button data-go="home" aria-current="true">연습 설정</button>
+      <button data-go="method">분석 기준</button>
+      <button data-go="bank">문항 은행</button>
+    </nav>
+  </header>
+  <main id="app"></main>
+  <video id="cam" playsinline muted autoplay hidden></video>
+</div>
+
+<script type="module">
+/* ═════════ 문항 ═════════ */
+const TRACKS={design:{name:"설계"},device:{name:"소자"},process:{name:"공정·양산기술"},infra:{name:"기반기술"},pe:{name:"PE·제품"}};
+const BASE=[
+/* ═══ PART 1 · 공통 — 후기에서 확인된 5가지 유형만 ═══ */
+// 유형 1. 1분 자기소개
+{id:"c0",part:"common",kind:"intro",track:"all",time:60,src:"A!SK 후기",fixed:true,text:"1분 동안 자기소개를 해 주세요."},
+// 유형 2. 지원동기
+{id:"m1",part:"common",kind:"motive",track:"all",time:60,src:"A!SK 후기",text:"SK하이닉스와 지원 직무에 지원한 동기를 말씀해 주세요."},
+{id:"m2",part:"common",kind:"motive",track:"all",time:60,src:"후기 유형",text:"지원한 직무에 지원하게 된 이유를 말씀해 주세요."},
+{id:"m3",part:"common",kind:"motive",track:"all",time:60,src:"후기 유형",text:"SK하이닉스에 지원한 이유와 입사 후 하고 싶은 일을 말씀해 주세요."},
+{id:"m4",part:"common",kind:"motive",track:"all",time:60,src:"후기 유형",text:"지원 직무에 관심을 갖게 된 계기를 말씀해 주세요."},
+// 유형 3. 갈등 경험
+{id:"g1",part:"common",kind:"exp",track:"all",time:60,src:"A!SK 후기",text:"팀 내에서 의견 갈등이 있었던 경험과, 그 갈등을 어떻게 해결했는지 말씀해 주세요."},
+{id:"g2",part:"common",kind:"exp",track:"all",time:60,src:"A!SK 후기",text:"갈등 상황에서 본인의 입장을 바꾸거나 양보했던 경험을 말씀해 주세요."},
+{id:"g3",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"팀원과 업무 방식이 달라 부딪쳤던 경험과 해결 과정을 말씀해 주세요."},
+{id:"g4",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"본인과 생각이 다른 사람을 설득했던 경험을 말씀해 주세요."},
+{id:"g5",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"갈등을 해결하지 못했거나 아쉽게 마무리된 경험과, 다시 한다면 어떻게 하겠는지 말씀해 주세요."},
+{id:"g6",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"두 사람 사이의 갈등을 중재했던 경험을 말씀해 주세요."},
+{id:"g7",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"역할 분담 문제로 팀 안에서 불만이 생겼던 경험과 대처 방법을 말씀해 주세요."},
+{id:"g8",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"상대방의 비판이나 반대 의견을 받아들여 결과가 바뀐 경험을 말씀해 주세요."},
+// 유형 4. 어려운 일·도전 경험
+{id:"h1",part:"common",kind:"exp",track:"all",time:60,src:"A!SK 후기",text:"남들이 주저하거나 어려워한 일을 본인이 맡아 수행한 경험을 말씀해 주세요."},
+{id:"h2",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"아무도 맡으려 하지 않던 일을 자원해서 해낸 경험을 말씀해 주세요."},
+{id:"h3",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"본인의 능력보다 어려운 목표에 도전했던 경험을 말씀해 주세요."},
+{id:"h4",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"처음 접하는 분야의 일을 맡아 끝까지 해낸 경험을 말씀해 주세요."},
+{id:"h5",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"가장 힘들었던 경험과 그것을 어떻게 극복했는지 말씀해 주세요."},
+{id:"h6",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"실패할 가능성이 높았지만 시도했던 경험과 그 결과를 말씀해 주세요."},
+{id:"h7",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"예상치 못한 문제로 일이 막혔을 때 해결해 낸 경험을 말씀해 주세요."},
+{id:"h8",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"기존에 하던 방식의 문제를 발견하고 개선한 경험을 말씀해 주세요."},
+// 유형 5. 팀워크 경험
+{id:"t1",part:"common",kind:"exp",track:"all",time:60,src:"A!SK 후기",text:"팀으로 목표를 달성한 경험에서 본인이 맡은 역할과 기여를 말씀해 주세요."},
+{id:"t2",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"팀 프로젝트에서 본인이 가장 크게 기여한 부분을 말씀해 주세요."},
+{id:"t3",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"협업 과정에서 소통 문제를 해결한 경험을 말씀해 주세요."},
+{id:"t4",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"팀원이 맡은 일을 제대로 하지 못했을 때 어떻게 함께 해결했는지 말씀해 주세요."},
+{id:"t5",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"리더 역할을 맡아 팀을 이끌었던 경험을 말씀해 주세요."},
+{id:"t6",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"전공이나 배경이 다른 사람들과 협업해 성과를 낸 경험을 말씀해 주세요."},
+{id:"t7",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"팀의 목표를 위해 본인의 일정이나 이익을 양보했던 경험을 말씀해 주세요."},
+{id:"t8",part:"common",kind:"exp",track:"all",time:60,src:"후기 유형",text:"팀 분위기가 나빠졌을 때 이를 바꾸기 위해 노력한 경험을 말씀해 주세요."},
+
+/* ═══ PART 2 · 반도체 공통 개념 (전 직무) ═══ */
+{id:"a1",part:"job",track:"all",time:180,src:"면접 후기",text:"반도체 8대 공정을 순서대로 설명해 주세요.",kw:["웨이퍼","산화","포토","식각","증착","이온주입","금속","EDS","패키징"]},
+{id:"a2",part:"job",track:"all",time:180,src:"면접 후기",text:"HBM이 무엇인지, 기존 DRAM과 어떻게 다른지 설명해 주세요.",kw:["TSV","적층","대역폭","I/O","전력","AI"]},
+{id:"a3",part:"job",track:"all",time:180,src:"후기 유형",text:"DRAM과 NAND Flash의 차이를 설명해 주세요.",kw:["휘발성","비휘발성","커패시터","리프레시","전하","속도","용량"]},
+{id:"a4",part:"job",track:"all",time:180,src:"후기 유형",text:"휘발성 메모리와 비휘발성 메모리의 차이를 설명해 주세요.",kw:["전원","데이터","DRAM","NAND","속도","용도"]},
+{id:"a5",part:"job",track:"all",time:180,src:"후기 유형",text:"MOSFET의 동작 원리를 설명해 주세요.",kw:["게이트","소스","드레인","채널","문턱","반전층"]},
+{id:"a6",part:"job",track:"all",time:180,src:"후기 유형",text:"PN 접합의 원리를 설명해 주세요.",kw:["공핍","확산","전위 장벽","순방향","역방향"]},
+{id:"a7",part:"job",track:"all",time:180,src:"후기 유형",text:"진성 반도체와 외인성 반도체의 차이를 설명해 주세요.",kw:["도핑","전자","정공","캐리어","N형","P형"]},
+{id:"a8",part:"job",track:"all",time:180,src:"후기 유형",text:"TSV가 무엇이고 왜 필요한지 설명해 주세요.",kw:["관통","적층","신호","대역폭","길이","HBM"]},
+{id:"a9",part:"job",track:"all",time:180,src:"후기 유형",text:"반도체 수율의 의미와 수율이 중요한 이유를 설명해 주세요.",kw:["양품","비율","원가","결함","생산성"]},
+{id:"a10",part:"job",track:"all",time:180,src:"후기 유형",text:"전공정과 후공정의 차이를 설명해 주세요.",kw:["웨이퍼","회로","패키징","테스트","조립"]},
+
+/* ═══ 설계 ═══ */
+{id:"d1",part:"job",track:"design",time:180,src:"후기 유형",text:"CMOS 인버터의 동작 원리를 설명해 주세요.",kw:["PMOS","NMOS","입력","출력","전원","접지","상보"]},
+{id:"d2",part:"job",track:"design",time:180,src:"후기 유형",text:"Setup time과 Hold time의 차이를 설명해 주세요.",kw:["클럭","에지","이전","이후","데이터","안정","플립플롭"]},
+{id:"d3",part:"job",track:"design",time:180,src:"후기 유형",text:"DRAM과 SRAM의 차이를 설명해 주세요.",kw:["커패시터","래치","리프레시","속도","면적","캐시"]},
+{id:"d4",part:"job",track:"design",time:180,src:"후기 유형",text:"DRAM 셀의 읽기 동작 원리를 설명해 주세요.",kw:["워드라인","비트라인","프리차지","전하","공유","센스","재저장"]},
+{id:"d5",part:"job",track:"design",time:180,src:"후기 유형",text:"DRAM에서 Sense Amplifier의 역할을 설명해 주세요.",kw:["비트라인","전압차","증폭","래치","재저장"]},
+{id:"d6",part:"job",track:"design",time:180,src:"후기 유형",text:"DRAM에서 Refresh가 필요한 이유를 설명해 주세요.",kw:["누설","커패시터","전하","리텐션","주기"]},
+{id:"d7",part:"job",track:"design",time:180,src:"후기 유형",text:"동적 전력과 정적 전력의 차이를 설명해 주세요.",kw:["스위칭","커패시턴스","전압","주파수","누설"]},
+{id:"d8",part:"job",track:"design",time:180,src:"후기 유형",text:"래치와 플립플롭의 차이를 설명해 주세요.",kw:["레벨","에지","클럭","트리거","타이밍"]},
+{id:"d9",part:"job",track:"design",time:180,src:"후기 유형",text:"동기식 회로와 비동기식 회로의 차이를 설명해 주세요.",kw:["클럭","타이밍","속도","설계","동기화"]},
+{id:"d10",part:"job",track:"design",time:180,src:"후기 유형",text:"PLL과 DLL의 차이를 설명해 주세요.",kw:["위상","VCO","지연","주파수","지터","클럭"]},
+{id:"d11",part:"job",track:"design",time:180,src:"후기 유형",text:"Op-amp 설계에서 위상 여유(Phase margin)가 필요한 이유를 설명해 주세요.",kw:["안정","발진","피드백","극점","보상"]},
+{id:"d12",part:"job",track:"design",time:180,src:"후기 유형",text:"전류 미러의 동작 원리를 설명해 주세요.",kw:["포화","게이트","복사","비율","출력 저항"]},
+{id:"d13",part:"job",track:"design",time:180,src:"후기 유형",text:"차동 증폭기를 사용하는 이유를 설명해 주세요.",kw:["공통 모드","노이즈","차동","CMRR","대칭"]},
+{id:"d14",part:"job",track:"design",time:180,src:"후기 유형",text:"Latch-up 현상의 원리와 방지 방법을 설명해 주세요.",kw:["기생","PNPN","사이리스터","웰","가드링"]},
+{id:"d15",part:"job",track:"design",time:180,src:"후기 유형",text:"IR drop이 생기는 이유와 회로에 미치는 영향을 설명해 주세요.",kw:["전원망","저항","전류","전압 강하","지연"]},
+{id:"d16",part:"job",track:"design",time:180,src:"후기 유형",text:"Metastability가 무엇인지 설명해 주세요.",kw:["플립플롭","setup","hold","불안정","동기화"]},
+{id:"d17",part:"job",track:"design",time:180,src:"후기 유형",text:"DRC와 LVS의 차이를 설명해 주세요.",kw:["규칙","레이아웃","회로도","일치","검증"]},
+{id:"d18",part:"job",track:"design",time:180,src:"후기 유형",text:"SDR과 DDR의 차이를 설명해 주세요.",kw:["상승","하강","에지","클럭","대역폭"]},
+{id:"d19",part:"job",track:"design",time:180,src:"후기 유형",text:"고속 인터페이스에서 ODT(On-Die Termination)가 필요한 이유를 설명해 주세요.",kw:["반사","임피던스","정합","신호","무결성"]},
+{id:"d20",part:"job",track:"design",time:180,src:"후기 유형",text:"DRAM의 워드라인과 비트라인의 역할을 설명해 주세요.",kw:["게이트","선택","데이터","전하","셀"]},
+{id:"d21",part:"job",track:"design",time:180,src:"후기 유형",text:"Pre-layout 시뮬레이션과 Post-layout 시뮬레이션의 차이를 설명해 주세요.",kw:["기생","RC","추출","정확도","검증"]},
+{id:"d22",part:"job",track:"design",time:180,src:"후기 유형",text:"Clock skew와 Clock jitter의 차이를 설명해 주세요.",kw:["위치","시간","도착","변동","타이밍"]},
+
+/* ═══ 소자 ═══ */
+{id:"v1",part:"job",track:"device",time:180,src:"후기 유형",text:"NMOS와 PMOS의 차이를 설명해 주세요.",kw:["전자","정공","이동도","문턱","캐리어"]},
+{id:"v2",part:"job",track:"device",time:180,src:"후기 유형",text:"문턱전압(Vth)의 의미와 결정 요인을 설명해 주세요.",kw:["반전층","도핑","산화막","일함수","바디"]},
+{id:"v3",part:"job",track:"device",time:180,src:"후기 유형",text:"MOSFET의 선형 영역과 포화 영역의 차이를 설명해 주세요.",kw:["드레인 전압","핀치오프","전류","채널"]},
+{id:"v4",part:"job",track:"device",time:180,src:"후기 유형",text:"단채널 효과가 생기는 이유를 설명해 주세요.",kw:["채널 길이","드레인","전계","문턱","누설"]},
+{id:"v5",part:"job",track:"device",time:180,src:"후기 유형",text:"DIBL 현상의 원리를 설명해 주세요.",kw:["드레인","장벽","문턱","누설","단채널"]},
+{id:"v6",part:"job",track:"device",time:180,src:"후기 유형",text:"GIDL 현상의 원리를 설명해 주세요.",kw:["게이트","드레인","밴드 간","터널링","누설"]},
+{id:"v7",part:"job",track:"device",time:180,src:"후기 유형",text:"High-k 절연막을 사용하는 이유를 설명해 주세요.",kw:["누설","터널링","유전율","두께","EOT"]},
+{id:"v8",part:"job",track:"device",time:180,src:"후기 유형",text:"Planar, FinFET, GAA 구조의 차이를 설명해 주세요.",kw:["게이트","채널","면","제어","누설"]},
+{id:"v9",part:"job",track:"device",time:180,src:"후기 유형",text:"쇼트키 접합과 오믹 접합의 차이를 설명해 주세요.",kw:["금속","장벽","정류","저항","도핑"]},
+{id:"v10",part:"job",track:"device",time:180,src:"후기 유형",text:"이동도(Mobility)의 의미와 이동도에 영향을 주는 요인을 설명해 주세요.",kw:["산란","온도","도핑","전계","캐리어"]},
+{id:"v11",part:"job",track:"device",time:180,src:"후기 유형",text:"NAND Flash의 Program과 Erase 원리를 설명해 주세요.",kw:["터널링","F-N","전하","문턱","고전압"]},
+{id:"v12",part:"job",track:"device",time:180,src:"후기 유형",text:"플로팅 게이트와 CTF(Charge Trap Flash)의 차이를 설명해 주세요.",kw:["도체","질화막","전하","간섭","3D"]},
+{id:"v13",part:"job",track:"device",time:180,src:"후기 유형",text:"SLC, MLC, TLC의 차이를 설명해 주세요.",kw:["비트","문턱 분포","속도","수명","용량"]},
+{id:"v14",part:"job",track:"device",time:180,src:"후기 유형",text:"3D NAND가 등장한 이유를 설명해 주세요.",kw:["미세화","간섭","적층","용량","면적"]},
+{id:"v15",part:"job",track:"device",time:180,src:"후기 유형",text:"Endurance와 Retention의 차이를 설명해 주세요.",kw:["반복","사이클","보존","시간","열화"]},
+{id:"v16",part:"job",track:"device",time:180,src:"후기 유형",text:"Hot Carrier Injection(HCI)의 원리를 설명해 주세요.",kw:["드레인","전계","고에너지","산화막","열화"]},
+{id:"v17",part:"job",track:"device",time:180,src:"후기 유형",text:"Row hammer 현상이 무엇인지 설명해 주세요.",kw:["인접","워드라인","반복","교란","전하"]},
+{id:"v18",part:"job",track:"device",time:180,src:"후기 유형",text:"Subthreshold swing의 의미를 설명해 주세요.",kw:["60mV","전류","게이트","오프","스위칭"]},
+
+/* ═══ 공정·양산기술 ═══ */
+{id:"p1",part:"job",track:"process",time:180,src:"A!SK 후기",text:"CVD와 ALD의 차이를 설명해 주세요.",kw:["전구체","증착","속도","두께","균일","단차","자기제한"]},
+{id:"p2",part:"job",track:"process",time:180,src:"A!SK 후기",text:"Photo 공정의 순서를 설명해 주세요.",kw:["감광","도포","베이크","노광","현상","세정"]},
+{id:"p3",part:"job",track:"process",time:180,src:"A!SK 후기",text:"CVD 공정의 원리를 설명해 주세요.",kw:["가스","반응","표면","박막","온도","압력"]},
+{id:"p4",part:"job",track:"process",time:180,src:"후기 유형",text:"PVD와 CVD의 차이를 설명해 주세요.",kw:["물리","화학","스퍼터링","단차 피복","금속"]},
+{id:"p5",part:"job",track:"process",time:180,src:"후기 유형",text:"건식 식각과 습식 식각의 차이를 설명해 주세요.",kw:["플라즈마","용액","이방성","등방성","선택비"]},
+{id:"p6",part:"job",track:"process",time:180,src:"후기 유형",text:"이방성 식각과 등방성 식각의 차이를 설명해 주세요.",kw:["방향","수직","언더컷","패턴","미세"]},
+{id:"p7",part:"job",track:"process",time:180,src:"후기 유형",text:"식각 선택비의 의미와 중요한 이유를 설명해 주세요.",kw:["식각률","비율","하부막","마스크","손상"]},
+{id:"p8",part:"job",track:"process",time:180,src:"후기 유형",text:"Positive PR과 Negative PR의 차이를 설명해 주세요.",kw:["노광","용해","남는","해상도","패턴"]},
+{id:"p9",part:"job",track:"process",time:180,src:"후기 유형",text:"노광 공정의 해상도를 결정하는 요인을 설명해 주세요.",kw:["파장","개구수","NA","k1","레일리"]},
+{id:"p10",part:"job",track:"process",time:180,src:"후기 유형",text:"EUV와 ArF 노광의 차이를 설명해 주세요.",kw:["파장","13.5","193","반사","멀티 패터닝"]},
+{id:"p11",part:"job",track:"process",time:180,src:"후기 유형",text:"CMP 공정의 원리와 목적을 설명해 주세요.",kw:["화학","기계","슬러리","패드","평탄"]},
+{id:"p12",part:"job",track:"process",time:180,src:"후기 유형",text:"CMP에서 Dishing과 Erosion의 차이를 설명해 주세요.",kw:["오목","금속","밀도","패턴","과연마"]},
+{id:"p13",part:"job",track:"process",time:180,src:"후기 유형",text:"이온 주입과 확산의 차이를 설명해 주세요.",kw:["가속","농도","깊이","온도","제어"]},
+{id:"p14",part:"job",track:"process",time:180,src:"후기 유형",text:"이온 주입 후 어닐링이 필요한 이유를 설명해 주세요.",kw:["활성화","손상","결정","회복"]},
+{id:"p15",part:"job",track:"process",time:180,src:"후기 유형",text:"건식 산화와 습식 산화의 차이를 설명해 주세요.",kw:["산소","수증기","속도","품질","두께"]},
+{id:"p16",part:"job",track:"process",time:180,src:"후기 유형",text:"PECVD와 LPCVD의 차이를 설명해 주세요.",kw:["플라즈마","저압","온도","균일","막질"]},
+{id:"p17",part:"job",track:"process",time:180,src:"면접 후기",text:"MFC가 무엇이고 공정에서 어떤 역할을 하는지 설명해 주세요.",kw:["유량","가스","제어","센서","밸브"]},
+{id:"p18",part:"job",track:"process",time:180,src:"면접 후기",text:"반도체 공정에 쓰이는 진공 장비의 종류와 진공이 필요한 이유를 설명해 주세요.",kw:["오염","평균 자유 행로","로터리","터보","드라이","플라즈마"]},
+{id:"p19",part:"job",track:"process",time:180,src:"후기 유형",text:"플라즈마의 원리와 반도체 공정에서 쓰이는 곳을 설명해 주세요.",kw:["이온","전자","라디칼","식각","증착"]},
+{id:"p20",part:"job",track:"process",time:180,src:"후기 유형",text:"CD(Critical Dimension)의 의미와 관리해야 하는 이유를 설명해 주세요.",kw:["선폭","패턴","특성","산포","계측"]},
+{id:"p21",part:"job",track:"process",time:180,src:"후기 유형",text:"오버레이(Overlay)의 의미를 설명해 주세요.",kw:["정렬","층","오차","노광","보정"]},
+{id:"p22",part:"job",track:"process",time:180,src:"후기 유형",text:"웨이퍼 세정 공정이 필요한 이유를 설명해 주세요.",kw:["파티클","금속","유기물","오염","수율"]},
+{id:"p23",part:"job",track:"process",time:180,src:"후기 유형",text:"계측(Metrology)과 검사(Inspection)의 차이를 설명해 주세요.",kw:["두께","CD","결함","측정","검출"]},
+{id:"p24",part:"job",track:"process",time:180,src:"후기 유형",text:"MTBF와 MTTR의 차이를 설명해 주세요.",kw:["고장","수리","시간","가동률"]},
+
+/* ═══ 기반기술 ═══ */
+{id:"i1",part:"job",track:"infra",time:180,src:"면접 후기",text:"HVAC이 반도체 FAB에 필요한 이유를 설명해 주세요.",kw:["온도","습도","청정","파티클","압력"]},
+{id:"i2",part:"job",track:"infra",time:180,src:"후기 유형",text:"클린룸 청정도 등급의 의미를 설명해 주세요.",kw:["입자","크기","개수","부피","등급"]},
+{id:"i3",part:"job",track:"infra",time:180,src:"후기 유형",text:"HEPA 필터와 ULPA 필터의 차이를 설명해 주세요.",kw:["포집","효율","입자 크기","청정도"]},
+{id:"i4",part:"job",track:"infra",time:180,src:"후기 유형",text:"FFU의 역할을 설명해 주세요.",kw:["팬","필터","기류","하강","청정"]},
+{id:"i5",part:"job",track:"infra",time:180,src:"후기 유형",text:"클린룸을 양압으로 유지하는 이유를 설명해 주세요.",kw:["압력","외부","오염","유입","차압"]},
+{id:"i6",part:"job",track:"infra",time:180,src:"후기 유형",text:"초순수(UPW)가 필요한 이유와 비저항의 의미를 설명해 주세요.",kw:["이온","불순물","세정","18","저항"]},
+{id:"i7",part:"job",track:"infra",time:180,src:"후기 유형",text:"스크러버의 역할을 설명해 주세요.",kw:["배기","유해","가스","처리","연소","습식"]},
+{id:"i8",part:"job",track:"infra",time:180,src:"후기 유형",text:"반도체 공장의 배기를 일반·산·알칼리·유기 배기로 나누는 이유를 설명해 주세요.",kw:["반응","부식","화재","분리","처리"]},
+{id:"i9",part:"job",track:"infra",time:180,src:"후기 유형",text:"냉동기의 동작 원리를 설명해 주세요.",kw:["냉매","압축","응축","팽창","증발"]},
+{id:"i10",part:"job",track:"infra",time:180,src:"후기 유형",text:"냉각탑의 역할을 설명해 주세요.",kw:["냉각수","열","증발","방출","냉동기"]},
+{id:"i11",part:"job",track:"infra",time:180,src:"후기 유형",text:"UPS의 역할과 FAB에서 필요한 이유를 설명해 주세요.",kw:["정전","순간","전력","설비","보호"]},
+{id:"i12",part:"job",track:"infra",time:180,src:"후기 유형",text:"특수가스를 공급할 때 가스 캐비닛이 필요한 이유를 설명해 주세요.",kw:["독성","누출","감지","차단","배기"]},
+{id:"i13",part:"job",track:"infra",time:180,src:"후기 유형",text:"PID 제어의 원리를 설명해 주세요.",kw:["비례","적분","미분","오차","제어"]},
+{id:"i14",part:"job",track:"infra",time:180,src:"후기 유형",text:"원심 펌프와 용적식 펌프의 차이를 설명해 주세요.",kw:["회전","유량","압력","원심력","체적"]},
+{id:"i15",part:"job",track:"infra",time:180,src:"후기 유형",text:"정전기(ESD)가 반도체에 문제가 되는 이유와 방지 방법을 설명해 주세요.",kw:["방전","손상","접지","이오나이저"]},
+{id:"i16",part:"job",track:"infra",time:180,src:"후기 유형",text:"열교환기의 원리를 설명해 주세요.",kw:["열","전달","유체","온도차","효율"]},
+{id:"i17",part:"job",track:"infra",time:180,src:"면접 후기",text:"Heat sink의 역할과 방열 성능을 높이는 방법을 설명해 주세요.",kw:["열","전도","대류","표면적","열저항"]},
+
+/* ═══ PE·제품 ═══ */
+{id:"e1",part:"job",track:"pe",time:180,src:"후기 유형",text:"웨이퍼 테스트(EDS)와 패키지 테스트의 차이를 설명해 주세요.",kw:["프로브","웨이퍼","패키지","번인","불량"]},
+{id:"e2",part:"job",track:"pe",time:180,src:"후기 유형",text:"메모리의 Redundancy(Repair) 원리를 설명해 주세요.",kw:["여분","행","열","퓨즈","대체"]},
+{id:"e3",part:"job",track:"pe",time:180,src:"후기 유형",text:"초기 불량과 수명 불량의 차이를 설명해 주세요.",kw:["초기","마모","고장률","욕조 곡선"]},
+{id:"e4",part:"job",track:"pe",time:180,src:"후기 유형",text:"번인(Burn-in) 테스트의 목적을 설명해 주세요.",kw:["초기 불량","가속","온도","전압","스크리닝"]},
+{id:"e5",part:"job",track:"pe",time:180,src:"후기 유형",text:"HTOL과 HAST의 차이를 설명해 주세요.",kw:["고온","동작","습도","가속","수명"]},
+{id:"e6",part:"job",track:"pe",time:180,src:"후기 유형",text:"Bin map이 무엇이고 어떤 정보를 주는지 설명해 주세요.",kw:["다이","등급","분포","패턴","웨이퍼"]},
+{id:"e7",part:"job",track:"pe",time:180,src:"후기 유형",text:"DRAM의 tRCD와 CAS Latency의 의미를 설명해 주세요.",kw:["활성화","읽기","지연","클럭","명령"]},
+{id:"e8",part:"job",track:"pe",time:180,src:"후기 유형",text:"DRAM의 Retention 불량이 생기는 원리를 설명해 주세요.",kw:["누설","전하","온도","리프레시","셀"]},
+{id:"e9",part:"job",track:"pe",time:180,src:"후기 유형",text:"온도에 따라 DRAM 특성이 어떻게 달라지는지 설명해 주세요.",kw:["누설","고온","리텐션","속도","저온"]},
+{id:"e10",part:"job",track:"pe",time:180,src:"후기 유형",text:"ECC(오류 정정 코드)의 원리와 필요한 이유를 설명해 주세요.",kw:["패리티","검출","정정","비트","신뢰성"]},
+{id:"e11",part:"job",track:"pe",time:180,src:"후기 유형",text:"KGD(Known Good Die)의 의미와 HBM에서 중요한 이유를 설명해 주세요.",kw:["적층","양품","테스트","수율","다이"]},
+{id:"e12",part:"job",track:"pe",time:180,src:"후기 유형",text:"품질과 신뢰성의 차이를 설명해 주세요.",kw:["출하","시간","수명","규격","고장"]},
+{id:"e13",part:"job",track:"pe",time:180,src:"후기 유형",text:"Speed bin(속도 등급 분류)의 의미를 설명해 주세요.",kw:["속도","분류","등급","테스트","가격"]},
+{id:"e14",part:"job",track:"pe",time:180,src:"후기 유형",text:"Fail bit map이 무엇이고 불량 분석에 어떻게 쓰이는지 설명해 주세요.",kw:["셀","위치","패턴","행","열","원인"]},
+
+/* ═══ 자료 해석형 — A!SK 후기: 마지막 문항이 시각자료 해석 ═══ */
+{id:"x1",part:"job",track:"all",time:180,src:"A!SK 후기",chart:"yield",visual:true,text:"다음은 A 라인의 주차별 수율 추이입니다. 그래프에서 읽을 수 있는 현상과 원인 가설, 추가로 확인할 데이터를 설명해 주세요.",kw:["PM","하락","회복","가설","설비","데이터","비교","레시피"]},
+{id:"x2",part:"job",track:"process,pe,device",time:180,src:"후기 유형",chart:"wafer",visual:true,text:"다음은 한 웨이퍼의 Fail die 분포(Wafer map)입니다. 패턴의 특징과 의심되는 공정 원인을 설명해 주세요.",kw:["가장자리","엣지","균일","증착","식각","CMP","온도"]},
+{id:"x3",part:"job",track:"design,pe",time:180,src:"후기 유형",chart:"shmoo",visual:true,text:"다음은 전원 전압(VDD)과 클럭 주기(tCK)에 따른 Shmoo plot입니다. 동작 영역의 특징을 해석하고, Fail 영역의 원인 가설을 말씀해 주세요.",kw:["전압","속도","타이밍","마진","지연"]},
+{id:"x4",part:"job",track:"all",time:180,src:"후기 유형",chart:"spc",visual:true,text:"다음은 한 설비의 박막 두께 관리도입니다. 관리도에서 이상 신호를 찾고, 어떤 조치를 해야 하는지 설명해 주세요.",kw:["관리 한계","추세","연속","드리프트","설비","점검"]},
+{id:"x5",part:"job",track:"design,device,pe",time:180,src:"후기 유형",chart:"retention",visual:true,text:"다음은 두 온도에서 측정한 DRAM 셀 Retention time 분포입니다. 두 분포의 차이를 해석하고 Refresh에 주는 시사점을 말씀해 주세요.",kw:["온도","누설","꼬리","약한 셀","리프레시","주기"]}
+];
+
+/* ═════════ 저장 ═════════ */
+const store={get(k,d){try{const v=localStorage.getItem("asksimcam:"+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem("asksimcam:"+k,JSON.stringify(v));}catch(e){}}};
+let custom=store.get("custom",[]), history=store.get("history",[]);
+let prefs=Object.assign({track:"design",mode:"full",visualLast:true,beep:true,minAnswer:true,live:false},store.get("prefs",{}));
+const allQ=()=>BASE.concat(custom);
+const forTrack=(q,t)=>q.track==="all"||q.track.split(",").includes(t);
+const savePrefs=()=>store.set("prefs",prefs);
+
+/* ═════════ 유틸 ═════════ */
+const app=document.getElementById("app"), camEl=document.getElementById("cam");
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const median=a=>{if(!a.length)return null;const s=a.slice().sort((x,y)=>x-y);return s[Math.floor(s.length/2)];};
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const std=a=>{if(a.length<2)return null;const m=mean(a);return Math.sqrt(mean(a.map(x=>(x-m)**2)));};
+const pct=(n,d)=>d?Math.round(100*n/d):null;
+
+/* ═════════ 미디어 ═════════ */
+const M={stream:null,audioCtx:null,analyser:null,buf:null,landmarker:null,faceState:"idle",calib:null,
+  last:{face:null,db:-100,voiced:false}, collecting:null, rec:null, sr:null};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+async function startMedia(){
+  if(M.stream) return true;
+  if(!navigator.mediaDevices?.getUserMedia){ throw new Error("이 브라우저에서는 카메라를 쓸 수 없습니다. Chrome 최신 버전에서 열어 주세요."); }
+  M.stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:640},height:{ideal:480},facingMode:"user"},audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:false}});
+  camEl.srcObject=M.stream; await camEl.play().catch(()=>{});
+  M.audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const src=M.audioCtx.createMediaStreamSource(M.stream);
+  M.analyser=M.audioCtx.createAnalyser(); M.analyser.fftSize=2048; src.connect(M.analyser);
+  M.buf=new Float32Array(M.analyser.fftSize);
+  setInterval(audioTick,100);
+  loadFace();
+  requestAnimationFrame(videoLoop);
+  return true;
+}
+async function loadFace(){
+  if(M.faceState!=="idle") return;
+  M.faceState="loading"; refreshSetupStatus();
+  try{
+    const V="0.10.14";
+    const vision=await import(`https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${V}/vision_bundle.mjs`);
+    const fs=await vision.FilesetResolver.forVisionTasks(`https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${V}/wasm`);
+    const opts=d=>({baseOptions:{modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",delegate:d},runningMode:"VIDEO",numFaces:1,outputFaceBlendshapes:true});
+    try{ M.landmarker=await vision.FaceLandmarker.createFromOptions(fs,opts("GPU")); }
+    catch(e){ M.landmarker=await vision.FaceLandmarker.createFromOptions(fs,opts("CPU")); }
+    M.faceState="ready";
+  }catch(e){ console.error(e); M.faceState="error"; }
+  refreshSetupStatus();
+}
+
+/* 얼굴 프레임 분석 */
+const lumCanvas=document.createElement("canvas"); lumCanvas.width=32; lumCanvas.height=24;
+const lumCtx=lumCanvas.getContext("2d",{willReadFrequently:true});
+let lastVT=-1, lastFrameAt=0;
+function videoLoop(now){
+  requestAnimationFrame(videoLoop);
+  if(!M.landmarker||camEl.readyState<2) return;
+  if(now-lastFrameAt<90) return; lastFrameAt=now;
+  const t=performance.now(); if(t<=lastVT) return; lastVT=t;
+  let r; try{ r=M.landmarker.detectForVideo(camEl,t); }catch(e){ return; }
+  const f=parseFace(r);
+  M.last.face=f;
+  if(M.collecting) M.collecting.frames.push(f||{none:true});
+  if(prefs.live && screen==="run") paintLive();
+  if(screen==="home") paintSetupLive();
+}
+function parseFace(r){
+  const L=r?.faceLandmarks?.[0]; if(!L) return null;
+  const bs={}; (r.faceBlendshapes?.[0]?.categories||[]).forEach(c=>bs[c.categoryName]=c.score);
+  let minx=1,maxx=0,miny=1,maxy=0; for(const p of L){ if(p.x<minx)minx=p.x; if(p.x>maxx)maxx=p.x; if(p.y<miny)miny=p.y; if(p.y>maxy)maxy=p.y; }
+  const yaw=(L[1].x-L[234].x)/((L[454].x-L[234].x)||1e-6);
+  const eyeMidY=(L[33].y+L[263].y)/2;
+  const pitch=(L[1].y-eyeMidY)/((L[152].y-eyeMidY)||1e-6);
+  const blink=((bs.eyeBlinkLeft||0)+(bs.eyeBlinkRight||0))/2;
+  let irisX=null, irisY=null;
+  if(L.length>=478 && blink<0.4){
+    const rx=(L[468].x-L[33].x)/((L[133].x-L[33].x)||1e-6), lx=(L[473].x-L[362].x)/((L[263].x-L[362].x)||1e-6);
+    const ry=(L[468].y-L[159].y)/((L[145].y-L[159].y)||1e-6), ly=(L[473].y-L[386].y)/((L[374].y-L[386].y)||1e-6);
+    irisX=(rx+lx)/2; irisY=(ry+ly)/2;
+  }
+  // 얼굴 밝기
+  let lum=null;
+  try{ lumCtx.drawImage(camEl,0,0,32,24); const d=lumCtx.getImageData(Math.floor(minx*32),Math.floor(miny*24),Math.max(1,Math.ceil((maxx-minx)*32)),Math.max(1,Math.ceil((maxy-miny)*24))).data;
+    let s=0,n=0; for(let i=0;i<d.length;i+=4){ s+=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]; n++; } lum=n?s/n:null; }catch(e){}
+  return {yaw,pitch,irisX,irisY,blink,smile:((bs.mouthSmileLeft||0)+(bs.mouthSmileRight||0))/2,
+    lookDown:((bs.eyeLookDownLeft||0)+(bs.eyeLookDownRight||0))/2,
+    cx:(minx+maxx)/2,cy:(miny+maxy)/2,w:maxx-minx,lum};
+}
+function gazeOf(f){
+  const c=M.calib||{yaw:0.5,pitch:0.42,irisX:0.5,irisY:0.42};
+  const dy=f.yaw-c.yaw, dp=f.pitch-c.pitch;
+  const ix=f.irisX==null?0:f.irisX-c.irisX, iy=f.irisY==null?0:f.irisY-c.irisY;
+  const down = dp>0.09 || iy>0.12 || f.lookDown>0.55;
+  const off = Math.abs(dy)>0.09 || Math.abs(dp)>0.09 || Math.abs(ix)>0.09 || Math.abs(iy)>0.13;
+  return {on:!off, down};
+}
+
+/* 음성 */
+function audioTick(){
+  if(!M.analyser) return;
+  M.analyser.getFloatTimeDomainData(M.buf);
+  let s=0; for(let i=0;i<M.buf.length;i++) s+=M.buf[i]*M.buf[i];
+  const rms=Math.sqrt(s/M.buf.length), db=20*Math.log10(rms+1e-9);
+  const floor=M.calib?.noise ?? -60;
+  const voiced=db>Math.max(-55,floor+12);
+  M.last.db=db; M.last.voiced=voiced;
+  let pitch=null; if(voiced) pitch=detectPitch(M.buf,M.audioCtx.sampleRate);
+  if(M.collecting) M.collecting.audio.push({db,voiced,pitch});
+  if(screen==="home") paintSetupMeter(db);
+  if(prefs.live && screen==="run") paintLiveMeter(db);
+}
+function detectPitch(b,sr){
+  const minL=Math.floor(sr/400), maxL=Math.floor(sr/75), n=1024;
+  let best=-1,bestL=0;
+  for(let l=minL;l<=maxL;l++){ let c=0; for(let i=0;i<n;i++) c+=b[i]*b[i+l]; if(c>best){best=c;bestL=l;} }
+  let e=0; for(let i=0;i<n;i++) e+=b[i]*b[i];
+  if(!bestL||best/(e+1e-9)<0.3) return null;
+  return sr/bestL;
+}
+
+/* 수집 시작/종료 */
+function beginCollect(){ M.collecting={t0:performance.now(),frames:[],audio:[],transcript:"",interim:""}; }
+function endCollect(){ const c=M.collecting; M.collecting=null; if(c) c.dur=(performance.now()-c.t0)/1000; return c; }
+
+/* 녹화 */
+function pickMime(){ const c=["video/webm;codecs=vp9,opus","video/webm;codecs=vp8,opus","video/webm","video/mp4"]; return c.find(m=>window.MediaRecorder?.isTypeSupported?.(m))||""; }
+function startRec(){
+  if(!window.MediaRecorder||!M.stream) return null;
+  const mime=pickMime(); const r=new MediaRecorder(M.stream,mime?{mimeType:mime,videoBitsPerSecond:1_200_000}:undefined);
+  const chunks=[]; r.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
+  const done=new Promise(res=>r.onstop=()=>res(new Blob(chunks,{type:r.mimeType||"video/webm"})));
+  r.start(1000); return {r,done};
+}
+
+/* 음성 인식 */
+function startSR(){
+  if(!SR) return null;
+  const s={on:true,final:"",rec:null,err:null};
+  const mk=()=>{ const r=new SR(); r.lang="ko-KR"; r.continuous=true; r.interimResults=true;
+    r.onresult=e=>{ let interim=""; for(let i=e.resultIndex;i<e.results.length;i++){ const t=e.results[i][0].transcript; if(e.results[i].isFinal) s.final+=t+" "; else interim+=t; } s.interim=interim; };
+    r.onerror=e=>{ s.err=e.error; };
+    r.onend=()=>{ if(s.on && s.err!=="not-allowed" && s.err!=="service-not-allowed"){ try{ s.rec=mk(); s.rec.start(); }catch(e){} } };
+    return r; };
+  try{ s.rec=mk(); s.rec.start(); }catch(e){ s.err="start"; }
+  return s;
+}
+function stopSR(s){ if(!s) return null; s.on=false; try{s.rec.stop();}catch(e){} return new Promise(res=>setTimeout(()=>res({text:(s.final+(s.interim||"")).trim(),err:s.err}),700)); }
+
+/* ═════════ 화면 ═════════ */
+let screen="home", run=null, tick=null, wake=null, beepCtx=null;
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ if(screen==="run") return; go(b.dataset.go); });
+function go(s){ screen=s; document.querySelectorAll("[data-go]").forEach(b=>b.setAttribute("aria-current",b.dataset.go===s?"true":"false")); render(); window.scrollTo(0,0); }
+function render(){ ({home:renderHome,method:renderMethod,bank:renderBank,run:renderRun,report:renderReport})[screen](); }
+function mountCam(target){ camEl.hidden=false; target.appendChild(camEl); camEl.play?.().catch(()=>{}); }
+function parkCam(){ camEl.hidden=true; document.querySelector(".wrap").appendChild(camEl); }
+
+/* ── 홈: 설정 + 사전 점검 ── */
+function renderHome(){
+  parkCam();
+  const t=prefs.track;
+  app.innerHTML=`
+  <div class="grid" style="gap:20px">
+    <section><h1>카메라 앞에서 실제처럼 답하고, 시선·목소리·말습관까지 점검하세요</h1>
+      <p class="lead">답변하는 동안 영상이 녹화되고, 얼굴과 음성을 분석해 문항마다 리포트를 만듭니다. 영상과 분석은 모두 이 컴퓨터 안에서만 처리되며 어디에도 업로드되지 않습니다.</p></section>
+    <section class="panel two">
+      <div class="grid" style="gap:10px;align-content:start">
+        <div class="label">사전 점검</div>
+        <div class="cam" id="camSlot"><div class="guide"></div></div>
+        <div class="meter" aria-label="마이크 음량"><i id="micbar"></i></div>
+        <div class="row"><button class="btn primary" id="camOn">카메라·마이크 켜기</button><button class="btn" id="calib" disabled>정면 기준 잡기</button></div>
+        <div class="note" id="camMsg"></div>
+      </div>
+      <div class="grid" style="gap:10px;align-content:start">
+        <div class="label">점검 항목</div>
+        <div class="checklist" id="checks"></div>
+        <div class="tip">정면 기준 잡기를 누르면 3초 동안 카메라 렌즈를 바라보며 조용히 있어 주세요. 이 값을 기준으로 시선 이탈과 주변 소음을 판단합니다.</div>
+      </div>
+    </section>
+    <section class="panel grid">
+      <div class="label">지원 직무</div>
+      <div class="chips" id="tracks">${Object.entries(TRACKS).map(([k,v])=>`<button class="chip" data-t="${k}" aria-pressed="${k===t}">${v.name}</button>`).join("")}</div>
+      <div class="label" style="margin-top:8px">연습 구성</div>
+      <div class="chips" id="modes">${[["full","실전 7문항"],["common","PART 1 공통만"],["job","PART 2 직무만"],["one","1문항 빠른 연습"]].map(([k,n])=>`<button class="chip" data-m="${k}" aria-pressed="${prefs.mode===k}">${n}</button>`).join("")}</div>
+      <div class="grid" style="gap:6px;margin-top:6px">
+        <label class="toggle"><input type="checkbox" id="vis" ${prefs.visualLast?"checked":""}> 마지막 직무 문항을 자료 해석형으로</label>
+        <label class="toggle"><input type="checkbox" id="minA" ${prefs.minAnswer?"checked":""}> 답변 최소 30초 전에는 종료 불가</label>
+        <label class="toggle"><input type="checkbox" id="live" ${prefs.live?"checked":""}> 답변 중 시선·음량 실시간 표시 (실전에서는 표시되지 않음)</label>
+        <label class="toggle"><input type="checkbox" id="beep" ${prefs.beep?"checked":""}> 답변 시작·종료 알림음</label>
+      </div>
+      <div class="row spread" style="margin-top:8px">
+        <span class="note" id="startNote"></span>
+        <button class="btn primary big" id="start">연습 시작</button>
+      </div>
+    </section>
+    ${history.length?`<section class="panel grid" style="gap:8px"><h2>최근 연습</h2><div class="hist">${history.slice(0,8).map(h=>`<div><span>${esc(h.date)} · ${esc(TRACKS[h.track]?.name||"")} · ${h.n}문항</span><span>행동 ${h.t??"-"} · 시각 ${h.v??"-"} · 음성 ${h.a??"-"} · 언어 ${h.l??"-"}</span></div>`).join("")}</div></section>`:""}
+  </div>`;
+  if(M.stream) mountCam(app.querySelector("#camSlot"));
+  app.querySelector("#camOn").onclick=async()=>{
+    const msg=app.querySelector("#camMsg");
+    try{ msg.textContent="권한을 요청하는 중…"; await startMedia(); mountCam(app.querySelector("#camSlot")); msg.textContent=""; refreshSetupStatus(); }
+    catch(e){ msg.textContent = e.name==="NotAllowedError" ? "카메라·마이크 권한이 거부되었습니다. 주소창 왼쪽 아이콘에서 허용으로 바꾼 뒤 다시 눌러 주세요." : (e.message||"카메라를 켜지 못했습니다."); }
+  };
+  app.querySelector("#calib").onclick=calibrate;
+  app.querySelectorAll("#tracks .chip").forEach(b=>b.onclick=()=>{prefs.track=b.dataset.t;savePrefs();renderHome();});
+  app.querySelectorAll("#modes .chip").forEach(b=>b.onclick=()=>{prefs.mode=b.dataset.m;savePrefs();renderHome();});
+  [["vis","visualLast"],["minA","minAnswer"],["live","live"],["beep","beep"]].forEach(([id,k])=>app.querySelector("#"+id).onchange=e=>{prefs[k]=e.target.checked;savePrefs();});
+  app.querySelector("#start").onclick=startRun;
+  refreshSetupStatus();
+}
+function refreshSetupStatus(){
+  if(screen!=="home") return;
+  const el=app.querySelector("#checks"); if(!el) return;
+  const st=(ok,txt)=>`<span class="pill ${ok===true?"good":ok===false?"bad":ok==="warn"?"warn":"na"}">${txt}</span>`;
+  const f=M.last.face;
+  const faceTxt=M.faceState==="loading"?st(null,"분석 모델 불러오는 중"):M.faceState==="error"?st(false,"모델 로드 실패"):!M.stream?st(null,"대기"):f?st(true,"인식됨"):st(false,"얼굴 없음");
+  const pos=!f?st(null,"-"):(Math.abs(f.cx-0.5)<0.12&&f.w>0.2&&f.w<0.55)?st(true,"적절"):st("warn",f.w<=0.2?"너무 멂":f.w>=0.55?"너무 가까움":"중앙에서 벗어남");
+  const lum=!f||f.lum==null?st(null,"-"):f.lum<70?st("warn","어두움"):f.lum>205?st("warn","너무 밝음"):st(true,"적절");
+  el.innerHTML=`
+    <div><span>카메라·마이크</span>${M.stream?st(true,"켜짐"):st(null,"꺼짐")}</div>
+    <div><span>얼굴 인식</span>${faceTxt}</div>
+    <div><span>얼굴 위치·크기</span>${pos}</div>
+    <div><span>얼굴 밝기 (조명)</span>${lum}</div>
+    <div><span>정면 기준·소음 측정</span>${M.calib?st(true,"완료 · 소음 "+Math.round(M.calib.noise)+" dB"):st(null,"미완료")}</div>
+    <div><span>음성 인식 (말 속도·습관어)</span>${SR?st(true,"지원"):st("warn","미지원 · Chrome 권장")}</div>`;
+  const cb=app.querySelector("#calib"); if(cb) cb.disabled=!(M.stream&&M.faceState==="ready");
+  const sn=app.querySelector("#startNote");
+  if(sn) sn.textContent=!M.stream?"카메라를 켜지 않으면 타이머 연습만 진행됩니다.":!M.calib?"정면 기준을 잡지 않으면 시선 판정이 부정확할 수 있습니다.":`${TRACKS[prefs.track].name} 직무로 출제합니다.`;
+}
+let setupPaint=0;
+function paintSetupLive(){ const n=performance.now(); if(n-setupPaint<500) return; setupPaint=n; refreshSetupStatus(); }
+function paintSetupMeter(db){ const b=document.getElementById("micbar"); if(b){ b.style.width=Math.max(0,Math.min(100,(db+70)*1.6))+"%"; } }
+async function calibrate(){
+  const btn=app.querySelector("#calib"), msg=app.querySelector("#camMsg");
+  btn.disabled=true; msg.textContent="렌즈를 바라보고 조용히 있어 주세요… 3";
+  beginCollect();
+  for(let k=2;k>=0;k--){ await new Promise(r=>setTimeout(r,1000)); msg.textContent=k?`렌즈를 바라보고 조용히 있어 주세요… ${k}`:"계산 중"; }
+  const c=endCollect(); const fr=c.frames.filter(f=>!f.none);
+  if(fr.length<5){ msg.textContent="얼굴이 충분히 인식되지 않았습니다. 화면 가운데에 얼굴이 오게 한 뒤 다시 눌러 주세요."; btn.disabled=false; return; }
+  const ix=fr.map(f=>f.irisX).filter(v=>v!=null), iy=fr.map(f=>f.irisY).filter(v=>v!=null);
+  M.calib={yaw:median(fr.map(f=>f.yaw)),pitch:median(fr.map(f=>f.pitch)),irisX:median(ix)??0.5,irisY:median(iy)??0.42,
+    noise:Math.max(-75,median(c.audio.map(a=>a.db))??-60)};
+  msg.textContent="기준을 저장했습니다."; btn.disabled=false; refreshSetupStatus();
+}
+
+/* ── 출제 ── */
+function mixJobs(Q,t){ const sp=shuffle(Q.filter(q=>q.part==="job"&&!q.visual&&q.track!=="all"&&forTrack(q,t))), gn=shuffle(Q.filter(q=>q.part==="job"&&!q.visual&&q.track==="all")); const out=[]; while(sp.length||gn.length){ if(sp.length) out.push(sp.shift()); if(sp.length) out.push(sp.shift()); if(gn.length) out.push(gn.shift()); } return out; }
+function buildSet(){
+  const t=prefs.track,Q=allQ();
+  const commons=Q.filter(q=>q.part==="common"), intro=commons.find(q=>q.fixed), others=shuffle(commons.filter(q=>!q.fixed));
+  const jobs=mixJobs(Q,t), visuals=shuffle(Q.filter(q=>q.part==="job"&&forTrack(q,t)&&q.visual));
+  const A1=others.find(q=>/^[mh]\d/.test(q.id))||others[0], A2=others.find(q=>/^[gt]\d/.test(q.id)&&q!==A1)||others.find(q=>q!==A1); const p1=[intro,A1,A2].filter(Boolean);
+  let p2=jobs.slice(0,4); if(prefs.visualLast&&visuals.length) p2=jobs.slice(0,3).concat(visuals[0]);
+  if(prefs.mode==="common") return p1; if(prefs.mode==="job") return p2;
+  if(prefs.mode==="one") return [shuffle(others.concat(jobs,visuals))[0]];
+  return p1.concat(p2);
+}
+
+/* ── 진행 ── */
+function startRun(){
+  const qs=buildSet(); if(!qs.length) return;
+  try{ beepCtx=beepCtx||new (window.AudioContext||window.webkitAudioContext)(); beepCtx.resume?.(); M.audioCtx?.resume?.(); }catch(e){}
+  try{ navigator.wakeLock?.request("screen").then(w=>wake=w).catch(()=>{}); }catch(e){}
+  run={qs,idx:0,phase:"prep",left:60,total:60,log:qs.map(q=>({id:q.id,prep:0,ans:0,skipped:false}))};
+  screen="run"; document.querySelectorAll("[data-go]").forEach(b=>b.setAttribute("aria-current","false"));
+  countdown(3,beginPrep);
+}
+function countdown(n,done){
+  const ov=document.createElement("div"); ov.className="overlay";
+  ov.innerHTML=`<span class="label">곧 시작합니다 · 카메라 렌즈를 보세요</span><b>${n}</b>`; document.body.appendChild(ov);
+  let k=n; const iv=setInterval(()=>{k--; if(k<=0){clearInterval(iv);ov.remove();done();} else ov.querySelector("b").textContent=k;},1000);
+}
+function beginPrep(){ run.phase="prep"; run.total=run.left=60; renderRun(); startTick(); }
+function beginAnswer(skipped){
+  const q=run.qs[run.idx], L=run.log[run.idx];
+  L.prep=Math.round(60-run.left); L.skipped=!!skipped;
+  run.phase="answer"; run.total=run.left=q.time; beep(880);
+  if(M.stream){ beginCollect(); run.cur={rec:startRec(), sr:startSR()}; }
+  renderRun(); startTick();
+}
+async function endAnswer(){
+  const i=run.idx, q=run.qs[i], L=run.log[i];
+  L.ans=Math.round(run.total-run.left); stopTick(); beep(440);
+  if(run.cur){
+    const cur=run.cur; run.cur=null; const data=endCollect();
+    const p=(async()=>{
+      let video=null; if(cur.rec){ try{ cur.rec.r.stop(); video=await cur.rec.done; }catch(e){} }
+      const sr=await stopSR(cur.sr);
+      L.videoBlob=video; L.videoURL=video?URL.createObjectURL(video):null;
+      L.transcript=sr?.text||""; L.srErr=sr?.err||null;
+      L.metrics=analyze(q,data,L);
+    })();
+    L.pending=p;
+  }
+  if(i<run.qs.length-1){ run.idx++; run.phase="gap"; renderRun(); setTimeout(()=>{ if(run&&run.phase==="gap") beginPrep(); },2500); }
+  else finishRun();
+}
+function startTick(){
+  stopTick(); const t0=performance.now(), start=run.left;
+  tick=setInterval(()=>{ run.left=start-(performance.now()-t0)/1000;
+    if(run.left<=0){ run.left=0; if(run.phase==="prep") beginAnswer(false); else if(run.phase==="answer") endAnswer(); return; }
+    paintTimer(); },200);
+}
+function stopTick(){ if(tick){clearInterval(tick);tick=null;} }
+function beep(f){ if(!prefs.beep||!beepCtx) return; try{ const o=beepCtx.createOscillator(),g=beepCtx.createGain(); o.frequency.value=f; o.connect(g); g.connect(beepCtx.destination); g.gain.setValueAtTime(.15,beepCtx.currentTime); g.gain.exponentialRampToValueAtTime(.001,beepCtx.currentTime+.35); o.start(); o.stop(beepCtx.currentTime+.36);}catch(e){} }
+
+function renderRun(){
+  const q=run.qs[run.idx], part=q.part==="common"?"PART 1 · 공통":"PART 2 · 직무";
+  if(run.phase==="gap"){ parkCam(); app.innerHTML=`<div class="panel" style="text-align:center;padding:48px 20px"><div class="label">다음 문항</div><h2 style="margin-top:8px">${run.idx+1} / ${run.qs.length} · ${part}</h2><p class="note">잠시 후 문항이 표시됩니다.</p></div>`; return; }
+  const prep=run.phase==="prep", col=prep?"var(--prep)":"var(--rec)";
+  app.innerHTML=`
+  <div class="grid" style="gap:16px">
+    <div class="status">${run.qs.map((_,i)=>`<div class="step ${i<run.idx?"done":i===run.idx?"now":""}"></div>`).join("")}</div>
+    <section class="panel runlay">
+      <div style="min-width:0">
+        <div class="qhead"><span>${run.idx+1} / ${run.qs.length} · ${part}</span><span>답변 최대 ${q.time/60}분</span></div>
+        <div style="margin-top:8px"><span class="badge ${prep?"prep":"rec"}">${prep?"답변 준비":"REC 답변 중"}</span></div>
+        <p class="qtext">${esc(q.text)}</p>
+        ${q.chart?`<div class="chart">${CHARTS[q.chart]()}</div>`:""}
+        <div class="timer"><b id="clock">${fmt(run.left)}</b><div class="bar"><i id="tbar" style="background:${col}"></i></div></div>
+      </div>
+      <div class="grid" style="gap:10px">
+        ${M.stream?`<div class="cam" id="runCam"><div class="live" id="live"></div></div>`:`<div class="note">카메라가 꺼져 있어 녹화·분석 없이 진행됩니다.</div>`}
+        ${M.stream&&prefs.live?`<div class="meter"><i id="runmic"></i></div>`:""}
+      </div>
+    </section>
+    <div class="row spread">
+      <span class="note">${prep?"준비 시간이 끝나면 녹화가 자동으로 시작됩니다.":"시간이 끝나면 다음 문항으로 넘어갑니다."}</span>
+      <div class="row"><button class="btn" id="quit">그만두기</button>${prep?`<button class="btn primary" id="skip">준비 건너뛰고 답변 시작</button>`:`<button class="btn primary" id="done">답변 종료</button>`}</div>
+    </div>
+  </div>`;
+  if(M.stream) mountCam(app.querySelector("#runCam"));
+  app.querySelector("#quit").onclick=()=>{ stopTick(); if(run.cur){ try{run.cur.rec?.r.stop();}catch(e){} stopSR(run.cur.sr); endCollect(); } releaseWake(); run=null; go("home"); };
+  const sk=app.querySelector("#skip"); if(sk) sk.onclick=()=>{ stopTick(); beginAnswer(true); };
+  const dn=app.querySelector("#done"); if(dn) dn.onclick=()=>endAnswer();
+  paintTimer();
+}
+function paintTimer(){
+  const c=document.getElementById("clock"), b=document.getElementById("tbar"); if(!c) return;
+  c.textContent=fmt(Math.ceil(run.left)); b.style.width=(100*run.left/run.total)+"%";
+  const dn=document.getElementById("done");
+  if(dn){ const used=run.total-run.left, lock=prefs.minAnswer&&used<30; dn.disabled=lock; dn.textContent=lock?`답변 종료 (${Math.ceil(30-used)}초 후)`:"답변 종료"; }
+}
+let livePaint=0;
+function paintLive(){
+  const el=document.getElementById("live"); if(!el) return;
+  const n=performance.now(); if(n-livePaint<300) return; livePaint=n;
+  const f=M.last.face;
+  if(!f){ el.innerHTML=`<span class="pill bad">얼굴 없음</span>`; return; }
+  const g=gazeOf(f);
+  el.innerHTML=`<span class="pill ${g.on?"good":"warn"}">${g.on?"정면 응시":"시선 이탈"}</span>${g.down?`<span class="pill bad">아래 보는 중</span>`:""}<span class="pill ${M.last.voiced?"good":"na"}">${M.last.voiced?"말하는 중":"무음"}</span>`;
+}
+function paintLiveMeter(db){ const b=document.getElementById("runmic"); if(b) b.style.width=Math.max(0,Math.min(100,(db+70)*1.6))+"%"; }
+function releaseWake(){ try{wake?.release();}catch(e){} wake=null; }
+
+async function finishRun(){
+  stopTick(); releaseWake(); parkCam();
+  app.innerHTML=`<div class="panel" style="text-align:center;padding:48px 20px"><h2>분석 중입니다</h2><p class="note">영상과 음성 인식 결과를 정리하고 있습니다.</p></div>`;
+  await Promise.all(run.log.map(l=>l.pending).filter(Boolean));
+  const s=sessionScores();
+  history.unshift({date:new Date().toLocaleString("ko-KR",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}),track:prefs.track,n:run.qs.length,t:s.total,v:s.visual,a:s.vocal,l:s.verbal});
+  history=history.slice(0,20); store.set("history",history);
+  screen="report"; render(); window.scrollTo(0,0);
+}
+
+/* ═════════ 분석 ═════════ */
+const FILLERS=["음","으음","어","어어","그","저","저기","약간","뭔가","이제","그러니까","사실","막","좀","아"];
+const NUMRE=/\d|퍼센트|%|배|개월|주간|명|시간|분 만에|단계|절반|두 배|세 배|[일이삼사오육칠팔구십백천만]+\s?(?:퍼센트|배|명|개월|주|건|개)/g;
+const STAR={상황:/당시|상황|프로젝트|과제|문제|팀에서|인턴|수업|연구실/,행동:/제가|저는|분석|제안|설계|진행|적용|정리|설득|조율|시도|해결하기 위해/,결과:/결과|개선|달성|향상|줄였|높였|감소|증가|성공|완성|수상|배웠/};
+/* 가중치 합 100 = 시각 40 · 음성 35 · 언어(전달) 25. c는 측정값 → 점수(0~100) 구간 선형 보간 */
+const SPEC={
+  gaze:{w:12,c:[[30,0],[55,45],[75,80],[90,100]]},
+  down:{w:8,c:[[0,100],[8,85],[20,45],[40,0]]},
+  face:{w:5,c:[[70,0],[85,50],[95,90],[100,100]]},
+  breaks:{w:5,c:[[0,100],[4,85],[8,50],[15,0]]},
+  head:{w:4,c:[[0,100],[0.03,85],[0.06,50],[0.12,0]]},
+  blink:{w:2,c:[[0,40],[8,75],[15,100],[25,100],[35,65],[50,20],[70,0]]},
+  smile:{w:2,c:[[0,40],[3,60],[10,85],[25,100]]},
+  pos:{w:1,c:[[0,40],[1,100]]},
+  light:{w:1,c:[[30,0],[70,60],[90,100],[190,100],[220,50],[255,20]]},
+  pause:{w:8,c:[[0,100],[1,85],[3,50],[6,0]]},
+  vol:{w:6,c:[[0,0],[12,50],[20,85],[30,100]]},
+  time:{w:6,c:null},
+  delay:{w:5,c:[[0,100],[2,90],[4,55],[8,0]]},
+  talk:{w:5,c:[[20,0],[45,50],[60,85],[75,100]]},
+  pitch:{w:5,c:[[0,0],[1.2,45],[2,80],[3,100]]},
+  filler:{w:9,c:[[0,100],[2,85],[5,45],[10,0]]},
+  rate:{w:8,c:[[150,0],[200,40],[260,90],[300,100],[380,100],[440,55],[520,0]]},
+  star:{w:5,c:[[0,0],[1,30],[2,65],[3,100]]},
+  kw:{w:5,c:[[0,0],[20,40],[40,80],[60,100]]},
+  num:{w:3,c:[[0,40],[1,85],[2,100]]}
+};
+const CATW={"시각":40,"음성":35,"언어":25};
+function interp(c,x){ if(x<=c[0][0]) return c[0][1]; for(let i=1;i<c.length;i++){ if(x<=c[i][0]){ const [x0,y0]=c[i-1],[x1,y1]=c[i]; return y0+(y1-y0)*(x-x0)/(x1-x0); } } return c[c.length-1][1]; }
+const stOf=s=>s==null?"na":s>=80?"good":s>=55?"warn":"bad";
+function gradeOf(s){ if(s==null) return {g:"-",cls:"na"}; return s>=85?{g:"우수",cls:"good"}:s>=70?{g:"합격권",cls:"good"}:s>=55?{g:"보완 필요",cls:"warn"}:{g:"미흡",cls:"bad"}; }
+
+function analyze(q,d,L){
+  const m=[];
+  const add=(cat,key,label,val,raw,why,sOverride)=>{ const sp=SPEC[key]; let s=null;
+    if(sOverride!=null) s=sOverride; else if(sp&&sp.c&&raw!=null&&!Number.isNaN(raw)) s=Math.round(interp(sp.c,raw));
+    m.push({cat,key,label,val,raw,s,w:sp?.w||0,status:stOf(s),why}); };
+  const fr=d.frames, faces=fr.filter(f=>!f.none), N=fr.length, dur=d.dur||L.ans||1;
+  if(M.faceState==="ready" && N>5){
+    const facePct=pct(faces.length,N);
+    add("시각","face","얼굴 인식률",facePct+"%",facePct,"화면 밖으로 나가거나 손으로 가리면 평가가 어려워집니다.");
+    if(faces.length>5){
+      const gz=faces.map(gazeOf), onPct=pct(gz.filter(g=>g.on).length,faces.length), downPct=pct(gz.filter(g=>g.down).length,faces.length);
+      add("시각","gaze","카메라 응시율",onPct+"%",onPct,"화면 속 얼굴이 아니라 렌즈를 볼 때 면접관과 눈을 맞추는 것으로 보입니다.");
+      add("시각","down","아래를 본 비율",downPct+"%",downPct,"아래 시선이 길면 메모나 원고를 읽는 것으로 비칠 수 있습니다.");
+      let breaks=0,r2=0; for(const g of gz){ if(!g.on){ r2++; if(r2===7) breaks++; } else r2=0; }
+      const bpm=+(breaks/(dur/60)).toFixed(1);
+      add("시각","breaks","시선 이탈 횟수",`${breaks}회 (${bpm}/분)`,bpm,"0.7초 이상 렌즈에서 벗어난 횟수입니다.");
+      const mv=Math.max(std(faces.map(f=>f.yaw))||0,std(faces.map(f=>f.pitch))||0);
+      add("시각","head","고개 움직임",mv<0.03?"적음":mv<0.06?"보통":"많음",mv,"고개를 자주 흔들거나 기울이면 불안해 보입니다. 가벼운 끄덕임은 괜찮습니다.");
+      let blinks=0,prev=false; for(const f of faces){ const b=f.blink>0.5; if(b&&!prev) blinks++; prev=b; }
+      const blpm=Math.round(blinks/(dur/60));
+      add("시각","blink","눈 깜빡임",`${blpm}회/분`,blpm,"긴장하면 늘어납니다. 보통 분당 15~25회입니다.");
+      const smilePct=pct(faces.filter(f=>f.smile>0.3).length,faces.length);
+      add("시각","smile","미소·표정",smilePct+"%",smilePct,"처음과 끝에 가볍게 웃으면 인상이 부드러워집니다.");
+      const cxDev=mean(faces.map(f=>Math.abs(f.cx-0.5))), w=mean(faces.map(f=>f.w)), ok=cxDev<0.12&&w>0.2&&w<0.55;
+      add("시각","pos","얼굴 위치",ok?"적절":w<=0.2?"너무 멂":w>=0.55?"너무 가까움":"치우침",ok?1:0,"얼굴이 화면 가운데, 어깨까지 보이는 거리가 좋습니다.");
+      const lum=mean(faces.map(f=>f.lum).filter(v=>v!=null));
+      if(lum!=null) add("시각","light","얼굴 밝기",Math.round(lum)+"",lum,"얼굴 앞쪽에 조명을 두고 역광을 피하세요.");
+    }
+  }
+  const A=d.audio;
+  if(A.length>10){
+    const firstV=A.findIndex(a=>a.voiced), delay=firstV<0?dur:firstV*0.1;
+    add("음성","delay","답변 시작까지",delay.toFixed(1)+"초",delay,"녹화가 시작되면 2초 안에 첫 문장을 시작하세요.");
+    const after=firstV<0?[]:A.slice(firstV), vc=after.filter(a=>a.voiced).length, voicedPct=pct(vc,after.length||1)??0;
+    add("음성","talk","발화 비율",voicedPct+"%",voicedPct,"말을 시작한 뒤 실제로 소리를 낸 시간의 비율입니다.");
+    let pauses=0,sil=0,longest=0; for(const a of after){ if(!a.voiced){ sil++; if(sil===20) pauses++; longest=Math.max(longest,sil);} else sil=0; }
+    add("음성","pause","2초 이상 침묵",`${pauses}회 · 최장 ${(longest*0.1).toFixed(1)}초`,pauses,"긴 침묵은 막힌 것으로 보입니다. 생각이 필요하면 연결어로 이어 가세요.");
+    const vdb=after.filter(a=>a.voiced).map(a=>a.db), noise=M.calib?.noise??median(A.map(a=>a.db));
+    if(vdb.length){ const snr=Math.round(median(vdb)-noise); add("음성","vol","목소리 크기 (소음 대비)",snr+" dB",snr,"작은 목소리는 자신감이 없어 보이고 음성 인식도 떨어집니다."); }
+    const ps=after.map(a=>a.pitch).filter(p=>p&&p>70&&p<420);
+    if(ps.length>15){ const mid=median(ps), sd=std(ps.map(p=>12*Math.log2(p/mid))); add("음성","pitch","억양 변화",sd.toFixed(1)+" 반음",sd,"높낮이 변화가 적으면 외운 답을 읽는 것처럼 들립니다."); }
+    L.voicedSec=vc*0.1;
+  }
+  { const ratio=L.ans/q.time, cut=ratio>=0.995;
+    const c=q.part==="common"?[[0,0],[0.5,30],[0.6,80],[0.75,100],[0.95,100],[0.995,60]]:[[0,0],[0.3,30],[0.5,80],[0.65,100],[0.95,100],[0.995,60]];
+    let s=Math.round(interp(c,ratio)); if(L.ans<30) s=Math.min(s,15);
+    add("음성","time","시간 활용",`${fmt(L.ans)} / ${fmt(q.time)}`,ratio,cut?"시간이 끝나 답변이 끊겼습니다. 결론을 먼저 말해 두면 끊겨도 손해가 적습니다.":q.part==="common"?"공통 문항은 40~55초가 적당합니다.":"직무 문항은 1분 30초~2분 40초 정도로 충분히 설명하세요.",s); }
+  const T=(L.transcript||"").trim();
+  if(T){
+    const syl=(T.match(/[가-힣]/g)||[]).length+(T.match(/[A-Za-z]+|\d+/g)||[]).length;
+    const rate=Math.round(syl/(Math.max(5,L.voicedSec||L.ans)/60));
+    add("언어","rate","말 속도",`${rate} 음절/분`,rate,rate>380?"빠르게 말하면 긴장한 것처럼 들리고 전달력이 떨어집니다.":rate<260?"너무 느리면 답이 준비되지 않은 것처럼 보입니다.":"알아듣기 좋은 속도입니다.");
+    const fc={}; let fn=0; T.split(/\s+/).forEach(w=>{ const c=w.replace(/[.,?!…~]/g,""); if(FILLERS.includes(c)){ fc[c]=(fc[c]||0)+1; fn++; } });
+    const fpm=+(fn/(L.ans/60||1)).toFixed(1);
+    add("언어","filler","습관어",fn?`${fn}회 (${Object.entries(fc).map(([k,v])=>k+" "+v).join(", ")})`:"0회",fpm,"'음, 어, 약간, 뭔가'가 잦으면 준비가 덜 된 인상을 줍니다. 음성 인식이 일부를 빼고 받아쓰기도 합니다.");
+    L.fillerWords=Object.keys(fc);
+    if(q.kind==="exp"||q.kind==="motive"){ const nums=(T.match(NUMRE)||[]).length; add("언어","num","수치·구체 표현",nums+"회",nums,"'수율을 3% 높였다'처럼 숫자가 들어가면 경험이 구체적으로 들립니다."); }
+    if(q.kind==="exp"){ const hit=Object.entries(STAR).filter(([,re])=>re.test(T)).map(([k])=>k);
+      add("언어","star","경험 구조 (상황·행동·결과)",hit.length?hit.join("·"):"없음",hit.length,"상황 → 내가 한 행동 → 결과가 모두 드러나야 합니다."); }
+    if(q.kw?.length){ const lt=T.toLowerCase(), hit=q.kw.filter(k=>lt.includes(k.toLowerCase())), p=pct(hit.length,q.kw.length);
+      add("언어","kw","핵심 개념어",`${hit.length}/${q.kw.length}`,p,"빠진 개념어: "+(q.kw.filter(k=>!hit.includes(k)).slice(0,5).join(", ")||"없음")); }
+  } else {
+    m.push({cat:"언어",key:"sr",label:"음성 인식",val:SR?(L.srErr?`실패 (${L.srErr})`:"인식된 말 없음"):"미지원",s:null,w:0,status:"na",
+      why:L.srErr==="not-allowed"?"음성 인식 권한이 막혀 있습니다. localhost 주소로 열면 해결되는 경우가 많습니다.":"받아쓴 답변 칸에 직접 적으면 Claude 평가에는 반영됩니다."});
+  }
+  return m;
+}
+function wavg(ms){ let a=0,b=0; ms.forEach(x=>{ if(x.s!=null&&x.w){ a+=x.s*x.w; b+=x.w; } }); return b?Math.round(a/b):null; }
+function catScore(ms,cat){ return wavg(ms.filter(x=>x.cat===cat)); }
+function totalScore(ms){ const parts=Object.entries(CATW).map(([c,w])=>[catScore(ms,c),w]).filter(([s])=>s!=null); const tw=parts.reduce((a,[,w])=>a+w,0); return tw?Math.round(parts.reduce((a,[s,w])=>a+s*w,0)/tw):null; }
+function sessionScores(){ const all=run.log.flatMap(l=>l.metrics||[]); return {visual:catScore(all,"시각"),vocal:catScore(all,"음성"),verbal:catScore(all,"언어"),total:totalScore(all),all}; }
+
+/* ═════════ 리포트 ═════════ */
+function highlight(t,fills){ let h=esc(t); (fills||[]).forEach(w=>{ h=h.replace(new RegExp(`(^|\\s)(${w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")})(?=\\s|$|[.,])`,"g"),"$1<mark>$2</mark>"); }); return h; }
+const KIND={intro:"자기소개",motive:"지원동기",exp:"경험"};
+function renderReport(){
+  if(!run){ go("home"); return; }
+  const s=sessionScores(), G=gradeOf(s.total);
+  const loss={}; s.all.forEach(x=>{ if(x.s==null||!x.w) return; const k=x.key; loss[k]=loss[k]||{label:x.label,why:x.why,v:0,worst:100}; loss[k].v+=x.w*(100-x.s); loss[k].worst=Math.min(loss[k].worst,x.s); });
+  const focus=Object.values(loss).filter(f=>f.worst<80).sort((a,b)=>b.v-a.v).slice(0,3);
+  const sc=(n,lbl,desc)=>`<div class="score"><span class="label">${lbl}</span><b>${n??"-"}</b><small>${desc}</small></div>`;
+  app.innerHTML=`
+  <div class="grid" style="gap:18px">
+    <section class="row spread" style="align-items:flex-end">
+      <div><h1>연습 리포트</h1><p class="lead">행동 점수는 시각 40 · 음성 35 · 언어 25 가중치로 계산한 연습용 기준입니다. 답변 내용 점수는 Claude 평가로 받으세요.</p></div>
+      <div class="score" style="min-width:180px"><span class="label">행동 점수</span><b>${s.total??"-"}</b><span class="pill ${G.cls}">${G.g}</span></div>
+    </section>
+    <section class="scorebox">
+      ${sc(s.visual,"시각 · 40","시선·원고 의심·표정·자세")}
+      ${sc(s.vocal,"음성 · 35","침묵·크기·억양·시간")}
+      ${sc(s.verbal,"언어 · 25","습관어·속도·구조·개념어")}
+    </section>
+    <section class="panel grid" style="gap:10px">
+      <h2>답변 내용 평가 받기</h2>
+      <p class="note" style="margin:0">버튼을 누르면 결과가 복사되고 평가 화면이 새 탭으로 열립니다. 평가 화면의 상자를 클릭하고 붙여 넣기(Ctrl+V, 맥은 ⌘V) 한 번이면 Claude가 문항별로 채점해 결과를 바로 보여 줍니다. 받아쓴 답변이 틀렸다면 아래 칸에서 먼저 고쳐 주세요.</p>
+      <div class="row"><button class="btn primary big" id="toClaude">Claude에게 답변 평가 받기</button><button class="btn" id="copyAll">채팅용 프롬프트 복사</button><span class="note" id="allmsg"></span></div>
+    </section>
+    ${focus.length?`<section class="panel focus"><h2>점수를 가장 많이 깎은 항목</h2>${focus.map((f,i)=>`<div><span class="pill ${f.worst<55?"bad":"warn"}">${i+1}</span><span><b>${esc(f.label)}</b> · ${esc(f.why)}</span></div>`).join("")}</section>`:""}
+    <section class="panel grid" style="gap:22px">
+      ${run.qs.map((q,i)=>{ const L=run.log[i], ms=L.metrics||[], qs=totalScore(ms), qg=gradeOf(qs);
+        const rows=["시각","음성","언어"].map(c=>{ const r=ms.filter(x=>x.cat===c); return r.length?`<tr class="cat"><td colspan="4">${c} ${catScore(r,c)??""}</td></tr>`+r.map(x=>`<tr><td>${esc(x.label)}<div class="why">${esc(x.why)}</div></td><td>${esc(x.val)}</td><td style="font-family:var(--f-mono);text-align:right">${x.s??"-"}</td><td><span class="pill ${x.status}">${({good:"좋음",warn:"보통",bad:"부족",na:"-"})[x.status]}</span></td></tr>`).join(""):""; }).join("");
+        return `<div class="qrep">
+          <div class="qhead"><span>${i+1}. ${q.part==="common"?"공통 · "+(KIND[q.kind]||""):"직무"}${q.visual?" · 자료 해석":""}</span><span>준비 ${L.skipped?"건너뜀":L.prep+"초"} · 답변 ${fmt(L.ans)} · 행동 ${qs??"-"} <span class="pill ${qg.cls}">${qg.g}</span></span></div>
+          <h3>${esc(q.text)}</h3>
+          <div class="replay">
+            <div class="grid" style="gap:8px;align-content:start">
+              ${L.videoURL?`<video src="${L.videoURL}" controls playsinline></video><div class="row"><a class="btn" href="${L.videoURL}" download="ASK_${i+1}_${q.id}.${(L.videoBlob?.type||"").includes("mp4")?"mp4":"webm"}">영상 저장</a></div>`:`<div class="note">녹화된 영상이 없습니다.</div>`}
+              <div class="label" style="margin-top:6px">받아쓴 답변 (고칠 수 있음)</div>
+              <textarea data-tr="${i}" placeholder="${SR?"음성 인식 결과가 없습니다. 영상을 보며 직접 적어 보세요.":"이 브라우저는 음성 인식을 지원하지 않습니다. 영상을 보며 직접 적어 보세요."}">${esc(L.transcript||"")}</textarea>
+              ${L.fillerWords?.length?`<div class="note">습관어 위치: <span>${highlight(L.transcript,L.fillerWords)}</span></div>`:""}
+              <div class="row"><button class="btn" data-copy="${i}">이 문항만 평가 받기</button><span class="note" id="cp-${i}"></span></div>
+            </div>
+            <div style="min-width:0;overflow-x:auto">${ms.length?`<table class="m">${rows}</table>`:`<div class="note">분석할 데이터가 없습니다.</div>`}</div>
+          </div>
+        </div>`; }).join("")}
+    </section>
+    <div class="row spread"><button class="btn" id="home">설정으로</button><button class="btn primary" id="again">같은 설정으로 다시</button></div>
+  </div>`;
+  app.querySelectorAll("[data-tr]").forEach(t=>t.oninput=e=>run.log[+t.dataset.tr].transcript=e.target.value);
+  app.querySelectorAll("[data-copy]").forEach(b=>b.onclick=()=>handoff([+b.dataset.copy],document.getElementById("cp-"+b.dataset.copy)));
+  app.querySelector("#toClaude").onclick=()=>handoff(run.qs.map((_,i)=>i),app.querySelector("#allmsg"));
+  app.querySelector("#copyAll").onclick=()=>sendToClaude(run.qs.map((_,i)=>i),app.querySelector("#allmsg"),false);
+  app.querySelector("#home").onclick=()=>{ run=null; go("home"); };
+  app.querySelector("#again").onclick=startRun;
+}
+
+const RUBRIC=`[내용 채점 기준 · 문항당 100점]
+- 두괄식 (20): 첫 문장에서 질문에 대한 결론이나 핵심을 말했는가
+- 핵심 내용 (40): 공통 문항은 경험의 구체성(상황·내 역할·행동·결과, 수치). 직무 문항은 개념 정확성과 원리 설명. 틀린 내용은 반드시 지적하고 감점
+- 연결 (20): 지원 직무와 SK하이닉스 업무로 연결했는가
+- 완결성 (20): 질문에 직접 답했고 시간 안에 마무리했는가
+받아쓴 답변은 음성 인식 결과라 오타가 있을 수 있습니다. 문맥상 명백한 인식 오류는 보정하되, 보정한 부분을 표시해 주세요.
+
+[종합 점수] 내용 평균 × 0.6 + 행동 점수 × 0.4
+[등급] 85 이상 우수 · 70~84 합격권 · 55~69 보완 필요 · 55 미만 미흡`;
+function buildPrompt(idx){
+  const s=sessionScores();
+  const one=idx.length===1;
+  const head=`SK하이닉스 A!SK(AI 영상면접) 모의연습 ${one?"답변":"결과"}입니다. 현직 면접관 관점에서 아래 기준대로 엄격하게 평가해 주세요. 칭찬은 근거가 있을 때만 해 주세요.
+
+[지원 직무] ${TRACKS[prefs.track].name}
+[행동 분석 점수 · 도구 측정] ${one?(totalScore(run.log[idx[0]].metrics||[])??"측정 안 됨"):`총 ${s.total??"-"} (시각 ${s.visual??"-"} / 음성 ${s.vocal??"-"} / 언어 ${s.verbal??"-"})`}
+`;
+  const body=idx.map(i=>{ const q=run.qs[i], L=run.log[i], ms=(L.metrics||[]).filter(x=>x.s!=null);
+    const weak=ms.filter(x=>x.s<80).map(x=>`${x.label} ${x.val} (${x.s}점)`).join(", ");
+    return `
+== 문항 ${i+1} · ${q.part==="common"?"공통/"+(KIND[q.kind]||""):"직무"}${q.visual?"/자료 해석":""} ==
+질문: ${q.text}${q.chart?`\n자료: ${CHART_DESC[q.chart]}`:""}
+답변 시간: ${L.ans}초 / 최대 ${q.time}초 · 행동 점수 ${totalScore(L.metrics||[])??"-"}
+보완이 필요한 행동 지표: ${weak||"없음"}
+답변(받아쓰기):
+${(L.transcript||"").trim()||"(받아쓴 내용 없음)"}`; }).join("\n");
+  const out=one?`
+[출력 형식]
+1. 항목별 점수(두괄식/핵심 내용/연결/완결성)와 내용 점수, 종합 점수와 등급
+2. 틀렸거나 빠진 내용
+3. 가장 먼저 고칠 점 2가지 (행동 지표 포함)
+4. 개선된 답변 예시 (${run.qs[idx[0]].time===60?"50초":"2분 30초"} 분량, 말하는 문장으로)`:`
+[출력 형식]
+1. 문항별 표: 번호 | 두괄식 | 핵심 내용 | 연결 | 완결성 | 내용 점수 | 한 줄 평
+2. 내용 평균, 종합 점수, 등급
+3. 전체에서 가장 먼저 고칠 점 3가지 (행동 지표 포함)
+4. 직무 문항에서 틀렸거나 빠진 개념 정리
+5. 점수가 가장 낮은 두 문항의 개선된 답변 예시 (말하는 문장으로, 시간 분량에 맞게)`;
+  return head+body+"\n\n"+RUBRIC+"\n"+out;
+}
+const CHART_DESC={
+  yield:"주차별 수율 W1~W5 약 92%, W5와 W6 사이 'Etch #3 PM' 표시 후 W6 86.9%, W7 84.7%로 하락, W8 85.3%, 'W8 이후 레시피 보정' 표시 후 W9 88.9%, W10 91.6%로 회복",
+  wafer:"웨이퍼 맵에서 가장자리 링 영역에 Fail die가 집중되고 중앙은 대부분 Pass, 중앙에 드문드문 Fail",
+  shmoo:"VDD 1.00~1.30V, tCK 0.625~1.25ns. 전압이 낮을수록 짧은 tCK에서 Fail 영역이 넓고, 1.30V에서도 최단 tCK 0.625ns는 Fail",
+  spc:"박막 두께 관리도(CL 100, UCL 103, LCL 97). 1~14번 로트는 99.2~100.9 사이, 15번부터 21번까지 7개 연속 상승(99.9→102.8), 22번 103.6으로 UCL 이탈, 23~25번 다시 100 부근",
+  retention:"Retention time 분포. 25°C는 10^3~10^4ms에 집중, 85°C는 약 한 자릿수 짧은 쪽으로 이동해 10^2~10^3ms에 집중하고 짧은 쪽 꼬리가 64ms 근처까지 이어짐"
+};
+async function sendToClaude(idx,note,open){
+  const txt=buildPrompt(idx);
+  let copied=false;
+  try{ await navigator.clipboard.writeText(txt); copied=true; }
+  catch(e){ const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); try{ copied=document.execCommand("copy"); }catch(_){} ta.remove(); }
+  if(open){
+    const enc=encodeURIComponent(txt);
+    const url=enc.length<=12000?"https://claude.ai/new?q="+enc:"https://claude.ai/new";
+    window.open(url,"_blank","noopener");
+    note.textContent=copied?(enc.length<=12000?"새 탭을 열었습니다. 입력창이 비어 있으면 붙여 넣기 하세요.":"답변이 길어 자동 입력 대신 복사했습니다. 새 탭 입력창에 붙여 넣기 하세요."):"복사하지 못했습니다. '복사만 하기'를 다시 눌러 주세요.";
+  } else note.textContent=copied?"복사했습니다. Claude 채팅에 붙여 넣으세요.":"복사하지 못했습니다.";
+}
+
+
+const EVAL_URL="https://claude.ai/artifact/SiA22HgznSsQjp2nmSADQv#eval";
+function buildData(idx){
+  const s=sessionScores(), all=idx.length===run.qs.length;
+  return {v:1,trackName:TRACKS[prefs.track].name,
+    date:new Date().toLocaleString("ko-KR",{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}),
+    behavior: all?{total:s.total,visual:s.visual,vocal:s.vocal,verbal:s.verbal}:{total:totalScore(run.log[idx[0]].metrics||[])},
+    items: idx.map(i=>{ const q=run.qs[i], L=run.log[i], ms=(L.metrics||[]).filter(x=>x.s!=null);
+      return {n:i+1,part:q.part,kindName:KIND[q.kind]||"",visual:!!q.visual,text:q.text,chartDesc:q.chart?CHART_DESC[q.chart]:"",
+        time:q.time,ans:L.ans,bscore:totalScore(L.metrics||[]),weak:ms.filter(x=>x.s<80).map(x=>`${x.label} ${x.val}`),transcript:(L.transcript||"").trim()}; })};
+}
+async function handoff(idx,note){
+  const txt="ASKSIM 녹화 결과 · A!SK 연습기의 '녹화 결과 평가' 화면에 붙여 넣으세요\n"+JSON.stringify(buildData(idx));
+  let ok=false;
+  try{ await navigator.clipboard.writeText(txt); ok=true; }
+  catch(e){ const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); try{ ok=document.execCommand("copy"); }catch(_){} ta.remove(); }
+  window.open(EVAL_URL,"_blank","noopener");
+  note.textContent=ok?"복사했습니다. 새 탭의 평가 화면에서 상자를 클릭하고 붙여 넣기 하세요.":"복사하지 못했습니다. 다시 눌러 주세요.";
+}
+
+/* ═════════ 분석 기준 ═════════ */
+function renderMethod(){
+  parkCam();
+  const row=(a,b,w,c)=>`<tr><td><b>${a}</b><div class="why">${b}</div></td><td>${w}</td><td class="note" style="text-align:left">${c}</td></tr>`;
+  app.innerHTML=`
+  <div class="grid" style="gap:18px">
+    <section><h1>무엇을, 어떻게 채점하나요</h1>
+      <p class="lead">AI 영상면접은 공통적으로 시각(표정·시선), 음성(톤·발음·속도), 언어(답변 내용·키워드)를 함께 본다고 알려져 있지만, 실제 가중치는 공개되지 않았습니다. 이 도구는 연습용으로 아래 가중치를 정했습니다. 원고를 읽는 것처럼 보이는 행동과 막힘, 습관어처럼 면접관이 바로 알아채는 신호에 무게를 두었습니다.</p></section>
+    <section class="panel grid" style="gap:10px">
+      <h2>점수 구조</h2>
+      <div class="tip">행동 점수 = 시각 40 + 음성 35 + 언어(전달) 25. 각 지표는 측정값을 0~100점으로 바꾼 뒤 가중 평균합니다. 측정하지 못한 지표는 빼고 다시 계산합니다.</div>
+      <div class="tip">종합 점수 = 답변 내용 60% + 행동 점수 40%. 답변 내용은 리포트의 'Claude에게 답변 평가 받기'로 받습니다.</div>
+      <div class="tip">등급: 85 이상 우수 · 70~84 합격권 · 55~69 보완 필요 · 55 미만 미흡.</div>
+    </section>
+    <section class="panel" style="overflow-x:auto"><table class="m" style="min-width:560px">
+      <tr class="cat"><td colspan="3">시각 40 · 웹캠 얼굴 랜드마크와 표정 계수</td></tr>
+      ${row("카메라 응시율","정면 기준 대비 고개 각도·눈동자 위치가 범위 안인 프레임 비율","12","75% → 80점, 90% → 100점")}
+      ${row("아래를 본 비율","원고 읽기 의심 신호","8","8% → 85점, 20% → 45점")}
+      ${row("얼굴 인식률","화면 안에 얼굴이 있었던 비율","5","95% → 90점")}
+      ${row("시선 이탈 횟수","0.7초 이상 이탈, 분당","5","4회 → 85점, 8회 → 50점")}
+      ${row("고개 움직임","좌우·상하 흔들림","4","")}
+      ${row("눈 깜빡임","분당 횟수","2","15~25회 만점")}
+      ${row("미소·표정","미소가 보인 비율","2","10% → 85점")}
+      ${row("얼굴 위치 · 밝기","","1 · 1","")}
+      <tr class="cat"><td colspan="3">음성 35 · 마이크 신호 0.1초 단위</td></tr>
+      ${row("2초 이상 침묵","말을 시작한 뒤 생긴 긴 공백","8","1회 → 85점, 3회 → 50점")}
+      ${row("목소리 크기","주변 소음 대비 음량","6","20 dB → 85점")}
+      ${row("시간 활용","허용 시간 대비 사용 시간","6","공통 45~57초, 직무 2~2분 50초 만점. 끊기면 60점, 30초 미만 15점")}
+      ${row("답변 시작까지","녹화 시작 후 첫 발화","5","2초 → 90점")}
+      ${row("발화 비율","말한 시간 비율","5","60% → 85점")}
+      ${row("억양 변화","높낮이 변화 폭","5","2반음 → 80점")}
+      <tr class="cat"><td colspan="3">언어 25 · 브라우저 음성 인식(한국어)</td></tr>
+      ${row("습관어","음·어·약간·뭔가 등, 분당","9","2회 → 85점, 5회 → 45점")}
+      ${row("말 속도","실제 발화 시간 기준 음절/분","8","300~380 만점")}
+      ${row("경험 구조 / 핵심 개념어","경험 문항은 상황·행동·결과, 직무 문항은 개념어 언급률","5","")}
+      ${row("수치·구체 표현","경험·지원동기 문항","3","")}
+    </table></section>
+    <section class="panel grid" style="gap:8px"><h2>한계</h2>
+      <div class="tip">시선은 '정면 기준 잡기' 때의 얼굴을 기준으로 판단합니다. 안경 반사, 어두운 조명, 카메라 위치 변화에 약합니다.</div>
+      <div class="tip">음성 인식은 습관어를 빼고 받아쓰기도 해서 습관어가 적게 잡힐 수 있습니다.</div>
+      <div class="tip">답변 내용이 맞는지는 이 도구가 판단하지 않습니다. Claude 평가로 받으세요.</div>
+    </section>
+  </div>`;
+}
+
+/* ═════════ 문항 은행 ═════════ */
+let bankFilter="all";
+function renderBank(){
+  parkCam();
+  const Q=allQ().filter(q=>bankFilter==="all"?true:bankFilter==="common"?q.part==="common":(q.part==="job"&&forTrack(q,bankFilter)));
+  app.innerHTML=`
+  <div class="grid" style="gap:16px">
+    <section><h1>문항 은행</h1><p class="lead"><span class="tag src">A!SK 후기</span> A!SK 응시 후기에 나온 질문, <span class="tag guide">면접 후기</span> SK하이닉스 면접 후기에 나온 같은 형식의 개념 질문, <span class="tag exp">후기 유형</span> 후기와 같은 형식(경험 질문, "~의 차이·원리를 설명해 주세요")으로 만든 문항, <span class="tag mine">내 문항</span> 직접 추가한 문항입니다.</p></section>
+    <div class="chips">${[["all","전체"],["common","공통"]].concat(Object.entries(TRACKS).map(([k,v])=>[k,v.name])).map(([k,n])=>`<button class="chip" data-f="${k}" aria-pressed="${bankFilter===k}">${n}</button>`).join("")}</div>
+    <section class="panel"><div class="qlist">${Q.map(q=>`<div class="qitem"><span class="tag ${({"A!SK 후기":"src","면접 후기":"guide","내 문항":"mine"}[q.src]||"exp")}">${esc(q.src)}</span><div style="min-width:0"><div>${esc(q.text)}</div><div class="sub">${q.part==="common"?"공통":"직무 · "+q.track.split(",").map(t=>t==="all"?"전 직무":TRACKS[t]?.name).join(", ")} · ${q.time}초${q.kw?" · 개념어 "+q.kw.length+"개":""}</div></div>${q.src==="내 문항"?`<button class="linkbtn" data-del="${q.id}">삭제</button>`:"<span></span>"}</div>`).join("")}</div></section>
+    <section class="panel grid" style="gap:10px"><h2>내 문항 추가</h2>
+      <textarea id="nq" placeholder="예: 본인이 수행한 회로 설계 프로젝트에서 가장 어려웠던 문제는 무엇이었나요?"></textarea>
+      <input id="nkw" placeholder="핵심 개념어 (쉼표로 구분, 선택)" style="width:100%;font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px">
+      <div class="row"><select id="np" style="width:auto"><option value="common">공통 · 경험 (1분)</option>${Object.entries(TRACKS).map(([k,v])=>`<option value="${k}" ${k===prefs.track?"selected":""}>직무 · ${v.name} (3분)</option>`).join("")}</select><button class="btn primary" id="add">추가</button><span class="note" id="addmsg"></span></div>
+    </section>
+  </div>`;
+  app.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{bankFilter=b.dataset.f;renderBank();});
+  app.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{custom=custom.filter(q=>q.id!==b.dataset.del);store.set("custom",custom);renderBank();});
+  app.querySelector("#add").onclick=()=>{
+    const t=app.querySelector("#nq").value.trim(), p=app.querySelector("#np").value, kw=app.querySelector("#nkw").value.split(",").map(s=>s.trim()).filter(Boolean);
+    if(!t){ app.querySelector("#addmsg").textContent="질문 내용을 입력해 주세요."; return; }
+    custom.push({id:"m"+Date.now(),part:p==="common"?"common":"job",kind:p==="common"?"exp":undefined,track:p==="common"?"all":p,time:p==="common"?60:180,src:"내 문항",text:t,kw:kw.length?kw:undefined});
+    store.set("custom",custom); renderBank();
+  };
+}
+
+/* ═════════ 자료 차트 ═════════ */
+const CHARTS={
+  spc(){ const d=[100.4,99.6,100.9,99.2,100.1,100.7,99.5,100.3,99.8,100.6,99.4,100.2,100.8,99.7,99.9,100.4,100.9,101.5,101.9,102.4,102.8,103.6,100.3,99.8,100.5],W=520,H=230,L=52,R=56,T=16,B=32;
+    const x=i=>L+i*(W-L-R)/(d.length-1), y=v=>T+(105-v)/10*(H-T-B); let g="";
+    [[103,"UCL 103.0"],[100,"CL 100.0"],[97,"LCL 97.0"]].forEach(([v,l],k)=>g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="${k===1?"var(--muted)":"var(--rec)"}" stroke-dasharray="${k===1?"":"5 4"}"/><text x="${W-R+4}" y="${y(v)+4}">${l}</text>`);
+    for(let v=96;v<=104;v+=2) g+=`<text x="${L-8}" y="${y(v)+4}" text-anchor="end">${v}</text>`;
+    [1,5,10,15,20,25].forEach(i=>g+=`<text x="${x(i-1)}" y="${H-12}" text-anchor="middle">${i}</text>`);
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="박막 두께 관리도, 25개 로트">${g}<text x="${L}" y="${H-1}">로트 순번 · 두께(nm)</text>
+      <polyline points="${d.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      ${d.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${v>103||v<97?"var(--rec)":"var(--accent)"}"/>`).join("")}</svg>`; },
+  retention(){ const bins=[1,1.25,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4,4.25,4.5],
+      a=[0,0,0,0,0,1,1,2,4,9,18,28,22,11,4], b=[0,1,1,2,4,8,15,24,22,13,6,3,1,0,0],W=520,H=230,L=40,R=14,T=24,B=40;
+    const x=v=>L+(v-1)/3.75*(W-L-R), y=c=>T+(1-c/30)*(H-T-B), bw=(W-L-R)/15/2-1; let g="";
+    for(let c=0;c<=30;c+=10) g+=`<line x1="${L}" x2="${W-R}" y1="${y(c)}" y2="${y(c)}" stroke="var(--line)"/><text x="${L-6}" y="${y(c)+4}" text-anchor="end">${c}%</text>`;
+    [1,2,3,4].forEach(e=>g+=`<text x="${x(e)}" y="${H-20}" text-anchor="middle">10^${e} ms</text>`);
+    bins.forEach((v,i)=>{ g+=`<rect x="${x(v)-bw-1}" y="${y(a[i])}" width="${bw}" height="${y(0)-y(a[i])}" fill="var(--accent)"/><rect x="${x(v)+1}" y="${y(b[i])}" width="${bw}" height="${y(0)-y(b[i])}" fill="var(--rec)"/>`; });
+    const r=x(Math.log10(64));
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="25도와 85도 Retention time 분포">${g}
+      <line x1="${r}" x2="${r}" y1="${T-8}" y2="${y(0)}" stroke="var(--prep)" stroke-dasharray="4 4"/><text x="${r+5}" y="${T-2}" style="fill:var(--prep)">64 ms</text>
+      <rect x="${W-R-120}" y="${T}" width="10" height="10" fill="var(--accent)"/><text x="${W-R-105}" y="${T+9}">25°C</text>
+      <rect x="${W-R-60}" y="${T}" width="10" height="10" fill="var(--rec)"/><text x="${W-R-45}" y="${T+9}">85°C</text>
+      <text x="${(L+W-R)/2}" y="${H-4}" text-anchor="middle">Retention time (로그 축) · 셀 비율</text></svg>`; },
+  yield(){ const d=[92.4,92.1,92.8,92.5,92.6,86.9,84.7,85.3,88.9,91.6],W=520,H=230,L=46,R=14,T=22,B=36;
+    const x=i=>L+i*(W-L-R)/(d.length-1), y=v=>T+(96-v)/16*(H-T-B); let g="";
+    for(let v=80;v<=96;v+=4) g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end">${v}%</text>`;
+    d.forEach((_,i)=>g+=`<text x="${x(i)}" y="${H-14}" text-anchor="middle">W${i+1}</text>`);
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="주차별 수율 추이">${g}
+      <line x1="${x(4.5)}" x2="${x(4.5)}" y1="${T-6}" y2="${H-B}" stroke="var(--prep)" stroke-dasharray="4 4"/><text x="${x(4.5)+6}" y="${T+4}" style="fill:var(--prep)">Etch #3 PM</text>
+      <line x1="${x(7.5)}" x2="${x(7.5)}" y1="${T-6}" y2="${H-B}" stroke="var(--muted)" stroke-dasharray="2 4"/><text x="${x(7.5)+6}" y="${T+4}">레시피 보정</text>
+      <polyline points="${d.map((v,i)=>x(i)+","+y(v)).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+      ${d.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.5" fill="${i===6?"var(--rec)":"var(--accent)"}"/>`).join("")}</svg>`; },
+  wafer(){ const N=15,S=14,cx=N*S/2,R=cx-2,p=20; let s="";
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const px=c*S+S/2,py=r*S+S/2,dist=Math.hypot(px-cx,py-cx); if(dist>R-S/2) continue;
+      const edge=dist>R-S*2.2, seed=(r*31+c*17)%11, fail=edge?seed<7:(seed===0&&(r+c)%5===0);
+      s+=`<rect x="${p+c*S+1}" y="${p+r*S+1}" width="${S-2}" height="${S-2}" rx="1.5" fill="${fail?"var(--rec)":"var(--ok-soft)"}" stroke="${fail?"var(--rec)":"var(--ok)"}" stroke-opacity=".5"/>`; }
+    const X=N*S+p*2;
+    return `<svg viewBox="0 0 ${X+160} ${X}" role="img" aria-label="웨이퍼 맵"><circle cx="${p+cx}" cy="${p+cx}" r="${R+3}" fill="none" stroke="var(--muted)"/>${s}
+      <rect x="${X+10}" y="${p+10}" width="12" height="12" fill="var(--rec)"/><text x="${X+28}" y="${p+20}">Fail die</text>
+      <rect x="${X+10}" y="${p+32}" width="12" height="12" fill="var(--ok-soft)" stroke="var(--ok)"/><text x="${X+28}" y="${p+42}">Pass die</text>
+      <text x="${X+10}" y="${p+72}">Lot B07 · W#12</text></svg>`; },
+  shmoo(){ const v=[1.00,1.05,1.10,1.15,1.20,1.25,1.30],t=[0.625,0.75,0.833,0.938,1.071,1.25],L=58,T=16,cw=58,ch=26; let s="";
+    v.forEach((vv,vi)=>{ t.forEach((tt,ti)=>{ let ok=ti>=[5,4,3,2,1,0,0][vi]; if(vi===6&&ti===0) ok=false;
+      s+=`<rect x="${L+ti*cw+1}" y="${T+(v.length-1-vi)*ch+1}" width="${cw-2}" height="${ch-2}" rx="2" fill="${ok?"var(--ok-soft)":"var(--rec-soft)"}" stroke="${ok?"var(--ok)":"var(--rec)"}" stroke-opacity=".6"/><text x="${L+ti*cw+cw/2}" y="${T+(v.length-1-vi)*ch+ch/2+4}" text-anchor="middle" style="fill:${ok?"var(--ok)":"var(--rec)"}">${ok?"P":"F"}</text>`; });
+      s+=`<text x="${L-8}" y="${T+(v.length-1-vi)*ch+ch/2+4}" text-anchor="end">${vv.toFixed(2)}V</text>`; });
+    t.forEach((tt,ti)=>s+=`<text x="${L+ti*cw+cw/2}" y="${T+v.length*ch+16}" text-anchor="middle">${tt}</text>`);
+    const W=L+t.length*cw+12,H=T+v.length*ch+40;
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Shmoo plot">${s}<text x="${L+t.length*cw/2}" y="${H-4}" text-anchor="middle">tCK (ns) → 길수록 느린 클럭</text></svg>`; }
+};
+
+render();
+if(location.protocol==="file:"){
+  const w=document.createElement("div"); w.className="warnbox";
+  w.innerHTML="파일을 직접 열었습니다. 카메라나 음성 인식이 막히면 이 파일이 있는 폴더에서 터미널을 열고 <code>python -m http.server 8000</code>을 실행한 뒤, Chrome에서 <code>http://localhost:8000/aisk-sim-camera.html</code>로 열어 주세요.";
+  document.querySelector(".wrap").insertBefore(w,app);
+}
+</script>
+</body>
+</html>
